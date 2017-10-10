@@ -1,12 +1,14 @@
 package com.sdm.hw.common.capability;
 /**
  * This enum working with capability framework class. Following steps should be performed to add a new
- *  Int capability:
+ * int capability:
+ * <pre>
  *  Step 1. Create a new Enum and corresponding to a string in the format of capabilityGroup[.capabiityGroup].capbility
  *  	e.g.: testGroup1L1.testGroup1L2.testBooleanCapability
  *  Step 2. Add addition group and capability in the corresponding capability XML. The XML must conforms to capability
  *  	XML Schema Definition.
  *  	e.g.:
+ *  ===============================
  *      <capabilityGroup name="testGroup1L1" enabled="true">
  *      	<capabilityGroup name="testGroup1L2" enabled="true">
  *      		<capability>
@@ -27,6 +29,8 @@ package com.sdm.hw.common.capability;
  *      		</capability>\
  *      	</capabilityGroup>
  *      </capabilityGroup>
+ *  ===============================
+ * </pre>
  *
  * @author Jasbir Minhas
  * @version 1.0
