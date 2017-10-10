@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+	<xs:element name="capabilityConfig">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="capabilityGroup" type="capabilityGroupType" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- capabilityGroupType definition -->
+	<xs:complexType name="capabilityGroupType">
+		<xs:sequence>
+			<xs:element name="capabilityGroup" type="capabilityGroupType" minOccurs="0" maxOccurs="unbounded"/>
+<!--			<xs:element ref="capabilityGroup" minOccurs="0" maxOccurs="unbounded"/>-->
+			<xs:element name="capability" type="capabilityType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:token" use="required"/>
+		<xs:attribute name="enabled" type="xs:boolean" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="capabilityType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:token" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="valueType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- valueType definition -->
+	<xs:complexType name="valueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="type" type="xs:string" use="required"/>
+				<!--<xs:assert test="if (@type='boolean')  then . castable as xs:boolean-->
+                        <!--else if (@type='float')     then . castable as xs:float-->
+                        <!--else if (@type='int')       then . castable as xs:int-->
+                        <!--else if (@type='string')    then . castable as xs:string-->
+                        <!--else false()"/>-->
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<!-- capabilityType definition -->
+	<!--<xs:complexType name="capabilityType-Working">-->
+		<!--<xs:simpleContent>-->
+			<!--<xs:extension base="xs:string">-->
+				<!--<xs:attribute name="name" type="xs:token" use="required"/>-->
+				<!--<xs:attribute name="type" type="xs:string" use="required"/>-->
+				<!--<xs:assert test="if (@type='boolean')  then . castable as xs:boolean-->
+                        <!--else if (@type='float')     then . castable as xs:float-->
+                        <!--else if (@type='int')       then . castable as xs:int-->
+                        <!--else if (@type='string')    then . castable as xs:string-->
+                        <!--else false()"/>-->
+			<!--</xs:extension>-->
+		<!--</xs:simpleContent>-->
+	<!--</xs:complexType>-->
+</xs:schema>

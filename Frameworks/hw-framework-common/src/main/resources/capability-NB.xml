@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<capabilityConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="capability.xsd">
+    <!-- A test group for testing the capability frame. Meant to be used for testing and an example only. -->
+    <capabilityGroup name="testGroup1L1" enabled="true">
+        <capabilityGroup name="testGroup1L2" enabled="true">
+            <capability>
+                <name>testStringCapability</name>
+                <value type="string">TestString</value>
+            </capability>
+            <capability>
+                <name>testBooleanCapability</name>
+                <value type="boolean">true</value>
+            </capability>
+            <capability>
+                <name>testIntCapability</name>
+                <value type="int">999</value>
+            </capability>
+            <capability>
+                <name>testFloatCapability</name>
+                <value type="float">10.9</value>
+            </capability>
+        </capabilityGroup>
+    </capabilityGroup>
+	<!--eHealth Capability Group-->
+	<capabilityGroup name="eHealth" enabled="true">
+		<capability>
+			<!--View ADR Status-->
+			<name>adrStatus</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--View replaced version status Changes for Allergy/Intolerance-->
+			<name>allergyReplacedVersion</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Allergy Status Drop Down Option-->
+			<name>allergyStatus</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Sub E-health configurable capability to check whether DIN exists for the entered chemical or not-->
+			<name>chemicalDINCheck</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--There is a sub-ehealth configurable capability mode in HW (On/Off)  for the comprehensive profile to
+            be user selectable or mandatory.-->
+			<name>comprehensiveModifier</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--View replaced version status Changes for medical condition-->
+			<name>conditionReplacedVersion</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--DECN Business entity type value-->
+			<name>decnBusinessEntityType</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--TODO: Add comments.-->
+			<name>displayManagementHistoryAtCv</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--TODO: Add comments.-->
+			<name>displayProvincialData</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--There is a sub-ehealth configurable capability mode in HW (On/Off)  for the Tx of selected Provincial
+            Rx on Rx Table to be user viewable or not.-->
+			<name>displayTxForProvincialRx</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--TODO: Add comments.-->
+			<name>eligibleForTrial</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--ePrescribing Enabled Check-->
+			<name>ePrescribing</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--There is a sub-ehealth configurable capability mode in HW (On/Off) to enable importing
+            provincial prescriptions.-->
+			<name>importProvincialPrescriptions</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Intolerance Status Dropdown Option-->
+			<name>intolStatus</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Link to Provincial Rx-->
+			<name>linkProvincialRx</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Enable Link to Prov Indicator-->
+			<name>linkStatusIndicator</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Provincial Location Search Enabled Check-->
+			<name>locationSearch</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Manage Consent Enabled Check-->
+			<name>manageConsent</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Provincial Patient Linking Is Required Or Not-->
+			<name>patientLinkage</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--There is a sub-ehealth configurable capability mode in HW (On/Off) to make the patient profile review
+            mandatory during CV.-->
+			<name>patientProRevIsMandatoryAtCV</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--Enable Provincial Patient Search On Client Registry-->
+			<name>patientSearch</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--TODO: Add comments.-->
+			<name>phoneEnabled</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--TODO: Add comments.-->
+			<name>postalCodeEnabled</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--Rx Order Id Enabled Check-->
+			<name>printRxOrderId</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--There must be a sub-ehealth configuration capability (ON/OFF) in HW to allow the system to execute the
+             Producer ID check when linking provincial patient to local.-->
+			<name>producerIDCheck</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Provincial Provider Search Enabled Check-->
+			<name>providerSearch</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Non-Fill Actions on Provincial Rx require Intake Enabled-->
+			<name>provincialRxRequireIntake</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--There is a sub-ehealth configurable capability mode in HW (On/Off)  for the medication profile
+            to be user selectable or not.-->
+			<name>provMedicationProfile</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--View Provincial Observation-->
+			<name>queryProvincialObservations</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--View Reason For Access Popup-->
+			<name>reasonToAccessPopup</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--check for  Provincial Note-->
+			<name>sendPatientNote</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Configuration Capability to disable/enable the not sent report from Action menu of Exception Queue.-->
+			<name>sendProvincialNotSentReport</name>
+			<value type="boolean">false</value>
+		</capability>
+		<capability>
+			<!--There is a sub-ehealth configurable capability mode in HW (On/Off)  for the user to select rx/tx note
+            to be sent to province from Data entry screen.-->
+			<name>sendRxTxNotes</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--TODO: add comments-->
+			<name>viewAllergiesMandatory</name>
+			<value type="boolean">false</value>
+		</capability>
+
+		<capability>
+			<!--View Provincial Allergies is Mandatory-->
+			<name>viewAllergiesMandatory</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Sub-Ehealth View Provincial ADRs-->
+			<name>viewProvincialAdrs</name>
+			<value type="boolean">true</value>
+		</capability>
+		<!--Sub-Ehealth View Provincial Allergies-->
+		<capability>
+			<name>viewProvincialAllergies</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--Sub-Ehealth View Provincial Reactions-->
+			<name>viewProvincialReactions</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--View Provincial Patient Conditions-->
+			<name>viewProvMedicalConditions</name>
+			<value type="boolean">true</value>
+		</capability>
+		<capability>
+			<!--TODO: Add comments.-->
+			<name>undiscRxAction</name>
+			<value type="boolean">false</value>
+		</capability>
+		<!--Note: Following  Not found -->
+		<!--<capability>-->
+		<!--&lt;!&ndash;if Correlation Service Available in Store&ndash;&gt;-->
+		<!--<name>correlationService</name>-->
+		<!--<value type="boolean">true</value>-->
+		<!--</capability>-->
+	</capabilityGroup>
+</capabilityConfig>

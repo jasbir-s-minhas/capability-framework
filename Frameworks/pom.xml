@@ -1,0 +1,403 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.sdm.hw</groupId>
+	<artifactId>hw-framework-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<name>Framework Parent Project</name>
+
+	<modules>
+		<module>hw-framework-logging</module>
+		<module>hw-framework-exception</module>
+		<module>hw-framework-common</module>
+		<!--<module>hw-record</module>-->
+		<!--<module>hw-framework-persistence</module>-->
+		<!--<module>hw-framework-integration</module>-->
+		<!--<module>hw-framework-internationalization</module>-->
+		<!--<module>hw-framework-rules-engine</module>-->
+		<!--<module>hw-framework-reporting</module>-->
+		<!--<module>hw-framework-service-invocation</module>-->
+		<!--<module>hw-base-delegate</module>-->
+		<!--<module>hw-base-orchestration</module>-->
+		<!--<module>hw-ui-factory</module>-->
+		<!--<module>hw-client-framework</module>-->
+		<!--<module>hw-framework-security</module>-->
+		<!--<module>hw-framework-event</module>-->
+		<!--module>hw-mdp-framework</module>
+		<module>service-provider-framework</module>
+		<module>business-exception-service</module-->
+	</modules>
+	<properties>
+		<spring.version>3.2.1.RELEASE</spring.version>
+		<slf4j.version>1.7.5</slf4j.version>
+		<logback.version>1.0.13</logback.version>
+	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Logging framework dependencies -->
+			<!-- Spring 3 dependencies -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<!-- Spring AOP + AspectJ -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>1.6.11</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>1.6.11</version>
+			</dependency>
+			<!-- Logging Framework -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+			</dependency>
+			<dependency>
+				<groupId>org.snmp4j</groupId>
+				<artifactId>snmp4j</artifactId>
+				<version>1.7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.joesnmp</groupId>
+				<artifactId>joesnmp</artifactId>
+				<version>0.3.4</version>
+			</dependency>
+			<!-- Exception framework dependency -->
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.6</version>
+			</dependency>
+			<!-- Hw-framework-common dependencies -->
+
+			<dependency>
+				<groupId>net.sourceforge.collections</groupId>
+				<artifactId>collections-generic</artifactId>
+				<version>4.01</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<!-- hw-framework-integration dependency -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jvnet.jaxb2_commons</groupId>
+				<artifactId>jaxb2-basics-runtime</artifactId>
+				<version>0.6.4</version>
+			</dependency>
+
+			<!-- Hw-framework-persistence dependency -->
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>4.1.1.Final</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.15.0-GA</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>4.1.1.Final</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.0.0.CR1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>1.5.3</version>
+			</dependency>
+
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm-attrs</artifactId>
+				<version>1.5.3</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>2.2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt.win32.win32</groupId>
+				<artifactId>x86</artifactId>
+				<version>4.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.swt.win32.win32</groupId>
+				<artifactId>x86_64</artifactId>
+				<version>4.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.7.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>1.2.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>aopalliance</groupId>
+				<artifactId>aopalliance</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<!-- Hw-framework-reporting dependency -->
+			<dependency>
+				<groupId>net.sf.jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>5.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>3.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.drools</groupId>
+				<artifactId>drools-spring</artifactId>
+				<version>5.5.0.Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>1.3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-remoting</artifactId>
+				<version>2.0.8</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jms</artifactId>
+				<version>3.2.2.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>jface</artifactId>
+				<version>3.2.0.200606051400</version>
+			</dependency>
+			<!-- security framework dependency -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm-all</artifactId>
+				<version>3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib-nodep</artifactId>
+				<version>2.1_3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.equinox</groupId>
+				<artifactId>common</artifactId>
+				<version>3.2.0.20060603</version>
+			</dependency>
+			<dependency>
+				<groupId>icesoft</groupId>
+				<artifactId>icepdf</artifactId>
+				<version>2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>icesoft</groupId>
+				<artifactId>ri_pdf</artifactId>
+				<version>2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
+				<artifactId>commands</artifactId>
+				<version>3.2.0-I20060605-1400</version>
+
+			</dependency>
+			<dependency>
+				<groupId>jmock</groupId>
+				<artifactId>jmock</artifactId>
+				<version>1.1.0</version>
+
+			</dependency>
+			<dependency>
+				<groupId>javax.jms</groupId>
+				<artifactId>jms</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>jmock</groupId>
+				<artifactId>jmock-cglib</artifactId>
+				<version>1.1.0</version>
+			</dependency>
+			<!-- Spring OXM dependency -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-oxm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<!-- Spring OXM dependency Ends -->
+
+
+
+
+
+
+
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.1</version>
+					<configuration>
+						<encoding>cp1252</encoding>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

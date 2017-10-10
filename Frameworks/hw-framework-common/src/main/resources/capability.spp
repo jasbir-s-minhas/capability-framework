@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+	<Folder FolderName="XML Files" ExtStr="xml;cml;math;rdf;smil;svg;wml">
+		<File FilePath="beverage-Copy.xml" HomeFolder="Yes"/>
+		<File FilePath="beverage.xml" HomeFolder="Yes"/>
+		<File FilePath="capability-config.xml" HomeFolder="Yes"/>
+		<File FilePath="capability-config_old.xml" HomeFolder="Yes"/>
+		<File FilePath="capability.xml" HomeFolder="Yes"/>
+		<File FilePath="database.xml" HomeFolder="Yes"/>
+		<File FilePath="instance1.xml" HomeFolder="Yes"/>
+		<File FilePath="publication.xml" HomeFolder="Yes"/>
+		<File FilePath="publication1.xml" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="XSL Files" ExtStr="xsl;xslt"/>
+	<Folder FolderName="XQuery Files" ExtStr="xq;xql;xquery"/>
+	<Folder FolderName="HTML Files" ExtStr="html;htm;xhtml;asp"/>
+	<Folder FolderName="DTD/Schemas" ExtStr="dtd;dcd;xdr;biz;xsd">
+		<File FilePath="beverage-Copy.xsd" HomeFolder="Yes"/>
+		<File FilePath="beverage.xsd" HomeFolder="Yes"/>
+		<File FilePath="capability-config.xsd" HomeFolder="Yes"/>
+		<File FilePath="capability-config_old.xsd" HomeFolder="Yes"/>
+		<File FilePath="capability.xsd" HomeFolder="Yes"/>
+		<File FilePath="publication.xsd" HomeFolder="Yes"/>
+		<File FilePath="xsi.xsd" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="Entities" ExtStr="ent"/>
+</Project>

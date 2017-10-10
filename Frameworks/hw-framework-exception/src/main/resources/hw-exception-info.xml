@@ -1,0 +1,51 @@
+<?xml	version="1.0"?>
+<hwexceptioninfo>
+	<exception name="HwBusinessException">
+		<messagecode>business.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>		
+	</exception>
+	<exception name="HwClientCNFException">
+		<messagecode>clientConfirm.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>		
+	</exception>
+	<exception name="HwDBException">
+		<messagecode>db.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>		
+	</exception>
+	<exception name="HwInterfaceException">
+		<messagecode>interfaceCommunication.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>		
+	</exception>
+	<exception name="HwSecurityException">
+		<messagecode>systenSecurity.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>		
+	</exception>
+	<exception name="HwServicesException">
+		<messagecode>businessService.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>		
+	</exception>
+	<exception name="HwTechnicalException">
+		<messagecode>technicalFault.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>		
+	</exception>
+	<exception name="HwSystemException">
+		<messagecode>system.exp.msg</messagecode>
+		<contextreq>true</contextreq>
+		<loggingtype>Error</loggingtype>
+		<showtoui>true</showtoui>
+	</exception>
+</hwexceptioninfo>
