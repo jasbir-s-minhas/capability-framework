@@ -1,6 +1,6 @@
 package com.sdm.hw.common.capability;
 /**
- * This enum working with capability framework class. Following steps should be performed to add a new
+ * This enum works with cCapabilityManager class. Following steps should be performed to add a new
  * int capability:
  * <pre>
  *  Step 1. Create a new Enum and corresponding to a string in the format of capabilityGroup[.capabiityGroup].capbility

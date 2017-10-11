@@ -1,7 +1,6 @@
 package com.sdm.hw.common.capability;
-
 /**
- * This enum working with capability framework class. Following steps should be performed to add a new
+ * This enum works with CapabilityManager class. Following steps should be performed to add a new
  * String capability:
  * <pre>
  *  Step 1. Create a new Enum and corresponding to a string in the format of capabilityGroup[.capabiityGroup].capbility
@@ -27,6 +26,7 @@ package com.sdm.hw.common.capability;
  *      		<capability>
  *      			<name>testFloatCapability</name>
  *      			<value type="float">10.9</value>
+
  *      		</capability>\
  *      	</capabilityGroup>
  *      </capabilityGroup>
