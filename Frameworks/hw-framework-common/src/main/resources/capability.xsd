@@ -1,56 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+<!--
+ Note: hand-coded XSD. Please do not generate this file with a tool.
+ * @author Jasbir Minhas
+ * @version 1.0
+ * @since 2017-10-10
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
 	<xs:element name="capabilityConfig">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="capabilityGroup" type="capabilityGroupType" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="currentProv" type="ProvCodeEnumType" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="capabilityGroup" type="CapabilityGroupType" minOccurs="1" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
-	<!-- capabilityGroupType definition -->
-	<xs:complexType name="capabilityGroupType">
+	<!-- CapabilityGroupType definition -->
+	<xs:complexType name="CapabilityGroupType">
 		<xs:sequence>
-			<xs:element name="capabilityGroup" type="capabilityGroupType" minOccurs="0" maxOccurs="unbounded"/>
-<!--			<xs:element ref="capabilityGroup" minOccurs="0" maxOccurs="unbounded"/>-->
-			<xs:element name="capability" type="capabilityType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="capabilityGroup" type="CapabilityGroupType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="capability" type="CapabilityType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:token" use="required"/>
 		<xs:attribute name="enabled" type="xs:boolean" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="capabilityType">
+
+    <!-- CapabilityType definition -->
+	<xs:complexType name="CapabilityType">
 		<xs:sequence>
-			<xs:element name="name" type="xs:token" minOccurs="1" maxOccurs="1"/>
-			<xs:element name="value" type="valueType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" minOccurs="1" maxOccurs="13">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:token" >
+                            <xs:attribute name="code" type="ProvCodeEnumType" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
 		</xs:sequence>
+        <xs:attribute name="name" type="xs:token" use="required"/>
+        <xs:attribute name="type" type="CapabilityAttribType" use="required"/>
 	</xs:complexType>
 
-	<!-- valueType definition -->
-	<xs:complexType name="valueType">
+    <!-- CapabilityAttribType definition -->
+    <xs:simpleType name="CapabilityAttribType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="boolean"/>
+            <xs:enumeration value="string"/>
+            <xs:enumeration value="float"/>
+            <xs:enumeration value="int"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- valueType definition -->
+	<xs:complexType name="ValueType">
 		<xs:simpleContent>
-			<xs:extension base="xs:string">
-				<xs:attribute name="type" type="xs:string" use="required"/>
+			<xs:extension base="xs:token">
+				<xs:attribute name="type" type="xs:token" use="required"/>
 				<!--<xs:assert test="if (@type='boolean')  then . castable as xs:boolean-->
                         <!--else if (@type='float')     then . castable as xs:float-->
                         <!--else if (@type='int')       then . castable as xs:int-->
-                        <!--else if (@type='string')    then . castable as xs:string-->
+                        <!--else if (@type='string')    then . castable as xs:token-->
                         <!--else false()"/>-->
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
 
-	<!-- capabilityType definition -->
-	<!--<xs:complexType name="capabilityType-Working">-->
-		<!--<xs:simpleContent>-->
-			<!--<xs:extension base="xs:string">-->
-				<!--<xs:attribute name="name" type="xs:token" use="required"/>-->
-				<!--<xs:attribute name="type" type="xs:string" use="required"/>-->
-				<!--<xs:assert test="if (@type='boolean')  then . castable as xs:boolean-->
-                        <!--else if (@type='float')     then . castable as xs:float-->
-                        <!--else if (@type='int')       then . castable as xs:int-->
-                        <!--else if (@type='string')    then . castable as xs:string-->
-                        <!--else false()"/>-->
-			<!--</xs:extension>-->
-		<!--</xs:simpleContent>-->
-	<!--</xs:complexType>-->
+    <!--Uncomment the following province codes as more provinces are implemented in Delta -->
+	<xs:simpleType name="ProvCodeEnumType" >
+		<xs:restriction base="xs:token">
+            <!--<xs:enumeration value="AB"/>-->
+            <!--<xs:enumeration value="BC"/>-->
+            <!--<xs:enumeration value="MB"/>-->
+            <xs:enumeration value="NB"/>
+            <!--<xs:enumeration value="NL"/>-->
+            <xs:enumeration value="NS"/>
+            <!--<xs:enumeration value="NT"/>-->
+            <!--<xs:enumeration value="NU"/>-->
+            <xs:enumeration value="ON"/>
+            <!--<xs:enumeration value="PE"/>-->
+            <!--<xs:enumeration value="QC"/>-->
+            <!--<xs:enumeration value="SK"/>-->
+            <!--<xs:enumeration value="YT"/>-->
+        </xs:restriction>
+	</xs:simpleType>
+
+
+    <!--<xs:complexType name="CapabilityType">-->
+    <!--    <xs:sequence>-->
+    <!--        <xs:element name="name" type="xs:token" minOccurs="1" maxOccurs="1"/>-->
+    <!--        <xs:element name="value" type="ValueType" minOccurs="1" maxOccurs="1"/>-->
+    <!--    </xs:sequence>-->
+    <!--    <xs:attribute name="name" type="xs:token" use="required"/>-->
+    <!--    <xs:attribute name="type" type="CapabilityAttribType" use="required"/>-->
+    <!--</xs:complexType>-->
 </xs:schema>
