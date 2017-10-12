@@ -123,6 +123,8 @@ public enum CapabilityBooleanKey implements CapabilityKey {
     VIEW_PROVINCIAL_REACTIONS("eHealth.viewProvincialReactions"),
     //View Provincial Patient Conditions
     VIEW_PROV_MEDICAL_CONDITIONS("eHealth.viewProvMedicalConditions"),
+    //View Provincial Patient Conditions
+    VIEW_STATUS_CHANCE("viewStatusChance"),
     //TODO: Add comments.
     UNDISC_RX_ACTION("eHealth.undiscRxAction");
 
