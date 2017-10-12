@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<capabilityConfig>
+<capabilityConfig  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="test.xsd">
     <version>1.1</version>
     <currentProvince>ON</currentProvince>
     <runMode>DEV</runMode>
