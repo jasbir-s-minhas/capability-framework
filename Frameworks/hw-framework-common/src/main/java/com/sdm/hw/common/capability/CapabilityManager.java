@@ -21,6 +21,7 @@ public class CapabilityManager {
     // Singleton Class initialization
     private static final CapabilityManager _instance;
     private static Logger LOGGER = Logger.getLogger(CapabilityManager.class.getName());
+    private static String currentProvCode;
 
     static {
         _instance = new CapabilityManager();
@@ -32,12 +33,15 @@ public class CapabilityManager {
 
     // Following tokens are used for building XPath for a capability.
     // e.g.: capabilityGroup[@name='eHealth']/capability[name='correlationService']/value
+    // e.g.: capabilityGroup[@name='eHealth']/capability[@name='adrStatus']/value[@code='ON']
+    private static final String PROV_CODE_XPATH="currentProv";
     private static final String XPATH_PREFIX = "capabilityGroup[@name='";
-    private static final String CLOSE_BRACKET = "']/";
+    private static final String CLOSE_BRACKET = "']";
+    private static final String FORWARD_SLASH ="/";
     private static final String DELIMITER = "\\.";
-    private static final String ENABLED_TAG = "@enabled";
-    private static final String CAPABILITY_NAME_TAG ="capability[name='";
-    private static final String VALUE_TAG="value";
+    private static final String ENABLED_TAG = "enabled[@code='";
+    private static final String CAPABILITY_NAME_TAG ="capability[@name='";
+    private static final String VALUE_TAG="value[@code='";
 
     /**
      * Private constructor for singleton
@@ -52,6 +56,7 @@ public class CapabilityManager {
     private void init() {
         initConfig("capability.xml", true);
         config.setExpressionEngine(new XPathExpressionEngine());
+        currentProvCode = config.getString(PROV_CODE_XPATH);
     }
 
     private void initConfig(String xmlConfigFile, boolean validate) {
@@ -69,7 +74,6 @@ public class CapabilityManager {
             // loading of the configuration file failed
             LOGGER.log(Level.SEVERE, cex.getMessage(), cex);
         }
-
     }
 
     /**
@@ -121,6 +125,7 @@ public class CapabilityManager {
             groupXpath.append(XPATH_PREFIX);
             groupXpath.append(tokens[i]);
             groupXpath.append(CLOSE_BRACKET);
+            groupXpath.append(FORWARD_SLASH);
         }
         return groupXpath.toString();
     }
@@ -133,7 +138,10 @@ public class CapabilityManager {
         capabilityXPath.append(CAPABILITY_NAME_TAG);
         capabilityXPath.append(capability);
         capabilityXPath.append(CLOSE_BRACKET);
+        capabilityXPath.append(FORWARD_SLASH);
         capabilityXPath.append(VALUE_TAG);
+        capabilityXPath.append(currentProvCode);
+        capabilityXPath.append(CLOSE_BRACKET);
         return  capabilityXPath.toString();
     }
 
@@ -148,7 +156,11 @@ public class CapabilityManager {
             groupXPath.append(XPATH_PREFIX);
             groupXPath.append(tokens[i]);
             groupXPath.append(CLOSE_BRACKET);
-            if (! config.getBoolean(groupXPath.toString()+ ENABLED_TAG)){
+            groupXPath.append(FORWARD_SLASH);
+//            groupXPath.append(ENABLED_TAG);
+//            groupXPath.append(currentProvCode);
+//            groupXPath.append(CLOSE_BRACKET);
+            if (! config.getBoolean(groupXPath.toString()+ENABLED_TAG+currentProvCode+CLOSE_BRACKET)){
                 // if any of the groups in hierarchy is disabled, all the sub group will be considered disabled
                 groupEnable = false;
                 break;

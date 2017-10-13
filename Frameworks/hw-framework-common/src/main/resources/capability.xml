@@ -2,32 +2,39 @@
 <capabilityConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="capability.xsd">
     <currentProv>ON</currentProv>
     <!-- A test group for testing the capability frame. Meant to be used for testing and an example only. -->
-    <capabilityGroup name="testGroup1L1" enabled="true">
-        <capabilityGroup name="testGroup1L2" enabled="true">
+    <capabilityGroup name="testGroup1L1">
+        <enabled code="NS">true</enabled>
+        <enabled code="NB">true</enabled>
+        <enabled code="ON">true</enabled>
+        <capabilityGroup name="testGroup1L2">
+            <enabled code="ON">true</enabled>
             <capability name="testStringCapability" type="string">
-                <value code="NS"></value>
-                <value code="NB"></value>
+                <value code="NS"/>
+                <value code="NB"/>
                 <value code="ON">abc</value>
             </capability>
             <capability name="testBooleanCapability" type="boolean">
-                <value code="NS"></value>
-                <value code="NB"></value>
+                <value code="NS"/>
+                <value code="NB"/>
                 <value code="ON">true</value>
             </capability>
             <capability name="testIntCapability" type="int">
-                <value code="NS"></value>
-                <value code="NB"></value>
+                <value code="NS"/>
+                <value code="NB"/>
                 <value code="ON">999</value>
             </capability>
             <capability name="testFloatCapability" type="boolean">
-                <value code="NS"></value>
-                <value code="NB"></value>
+                <value code="NS"/>
+                <value code="NB"/>
                 <value code="ON">10.9</value>
             </capability>
         </capabilityGroup>
     </capabilityGroup>
     <!--eHealth Capability Group-->
-    <capabilityGroup name="eHealth" enabled="true">
+    <capabilityGroup name="eHealth">
+        <enabled code="NS">true</enabled>
+        <enabled code="NB">true</enabled>
+        <enabled code="ON">true</enabled>
         <!--View ADR Status-->
         <capability type="boolean" name="adrStatus">
             <value code="NS">false</value>
@@ -113,7 +120,7 @@
         <capability type="boolean" name="intolStatus">
             <value code="NS">true</value>
             <value code="NB">true</value>
-            <value code="NB">true</value>
+            <value code="ON">true</value>
         </capability>
         <!--Link to Provincial Rx-->
         <capability type="boolean" name="linkProvincialRx">
@@ -282,13 +289,4 @@
         <!--<value type="boolean">true</value>-->
         <!--</capability>-->
     </capabilityGroup>
-
-
-
-
-
-
-
-
-
 </capabilityConfig>
