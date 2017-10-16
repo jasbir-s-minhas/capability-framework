@@ -6,6 +6,8 @@ import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.tree.xpath.XPathExpressionEngine;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +32,8 @@ public class CapabilityManager {
 
     // Loaded XMLConfiguraiton
     private XMLConfiguration config = null;
+
+    private CapabilityCache capabilityCache = new CapabilityCache();
 
     // Following tokens are used for building XPath for a capability.
     // e.g.: capabilityGroup[@name='eHealth']/capability[name='correlationService']/value
@@ -82,9 +86,15 @@ public class CapabilityManager {
      * @return boolean true or false
      */
     public boolean getBoolean(CapabilityKey key) {
-        boolean capbilityEnabled = false;
-        if (isGroupEnabled(key)){
-            capbilityEnabled = config.getBoolean(getCapabiltyXpath(key));
+        Boolean capbilityEnabled = capabilityCache.getBoolean(key);
+        if (capbilityEnabled == null){ // capability is not cached yet.
+            if (isGroupEnabled(key)){
+                capbilityEnabled = config.getBoolean(getCapabiltyXpath(key));
+            } else {
+                capbilityEnabled = false;
+            }
+            // add capability value to the cache
+            capabilityCache.setBoolean(key,capbilityEnabled);
         }
         return capbilityEnabled;
     }
@@ -157,9 +167,6 @@ public class CapabilityManager {
             groupXPath.append(tokens[i]);
             groupXPath.append(CLOSE_BRACKET);
             groupXPath.append(FORWARD_SLASH);
-//            groupXPath.append(ENABLED_TAG);
-//            groupXPath.append(currentProvCode);
-//            groupXPath.append(CLOSE_BRACKET);
             if (! config.getBoolean(groupXPath.toString()+ENABLED_TAG+currentProvCode+CLOSE_BRACKET)){
                 // if any of the groups in hierarchy is disabled, all the sub group will be considered disabled
                 groupEnable = false;
@@ -167,5 +174,45 @@ public class CapabilityManager {
             }
         }
         return groupEnable;
+    }
+
+    /**
+     * Inner class encapsulating capability cache
+     */
+    private class CapabilityCache{
+        // Hash map storing capability cache
+        private Map<CapabilityKey, Object> cacheMap = new HashMap<>();
+
+        // getters and setters
+        public Boolean getBoolean(CapabilityKey key){
+            return (Boolean) cacheMap.get(key);
+        }
+        public void setBoolean(CapabilityKey key, Boolean val){
+            cacheMap.put(key, val);
+        }
+
+        private String getString(String key){
+            return (String) cacheMap.get(key);
+        }
+        private void setString(CapabilityKey key, String val){
+            cacheMap.put(key, val);
+        }
+
+        private Integer getInt(CapabilityKey key){
+            return (Integer) cacheMap.get(key);
+        }
+        private void setInt(CapabilityKey key, Integer val){
+            cacheMap.put(key, val);
+        }
+
+        private Float getFloat(CapabilityKey key){
+            return (Float) cacheMap.get(key);
+        }
+        private void setFloat(CapabilityKey key, Float val){
+            cacheMap.put(key, val);
+        }
+        private boolean isCached(CapabilityKey key){
+            return  cacheMap.containsKey(key);
+        }
     }
 }
