@@ -9,25 +9,33 @@ package com.sdm.hw.common.capability;
  *  	XML Schema Definition.
  *  	e.g.:
  *  ===============================
- *      <capabilityGroup name="testGroup1L1" enabled="true">
- *      	<capabilityGroup name="testGroup1L2" enabled="true">
- *      		<capability>
- *      			<name>testStringCapability</name>
- *      			<value type="string">TestString</value>
- *      		</capability>
- *      		<capability>
- *      			<name>testBooleanCapability</name>
- *      			<value type="boolean">true</value>
- *      		</capability>
- *      		<capability>
- *      			<name>testIntCapability</name>
- *      			<value type="int">999</value>
- *      		</capability>
- *      		<capability>
- *      			<name>testFloatCapability</name>
- *      			<value type="float">10.9</value>
- *      		</capability>\
- *      	</capabilityGroup>
+ *      <capabilityGroup name="testGroup1L1">
+ *          <enabled code="NS">true</enabled>
+ *          <enabled code="NB">true</enabled>
+ *          <enabled code="ON">true</enabled>
+ *          <capabilityGroup name="testGroup1L2">
+ *              <enabled code="ON">true</enabled>
+ *              <capability name="testStringCapability" type="string">
+ *                  <value code="NS"/>
+ *                  <value code="NB"/>
+ *                  <value code="ON">abc</value>
+ *              </capability>
+ *              <capability name="testBooleanCapability" type="boolean">
+ *                  <value code="NS"/>
+ *                  <value code="NB"/>
+ *                  <value code="ON">true</value>
+ *              </capability>
+ *              <capability name="testIntCapability" type="int">
+ *                  <value code="NS"/>
+ *                  <value code="NB"/>
+ *                  <value code="ON">999</value>
+ *              </capability>
+ *              <capability name="testFloatCapability" type="boolean">
+ *                  <value code="NS"/>
+ *                  <value code="NB"/>
+ *                  <value code="ON">10.9</value>
+ *              </capability>
+ *          </capabilityGroup>
  *      </capabilityGroup>
  *  ===============================
  * </pre>
@@ -124,7 +132,7 @@ public enum CapabilityBooleanKey implements CapabilityKey {
     //View Provincial Patient Conditions
     VIEW_PROV_MEDICAL_CONDITIONS("eHealth.viewProvMedicalConditions"),
     //View Provincial Patient Conditions
-    VIEW_STATUS_CHANCE("viewStatusChance"),
+    VIEW_STATUS_CHANCE("eHealth.viewStatusChance"),
     //TODO: Add comments.
     UNDISC_RX_ACTION("eHealth.undiscRxAction");
 
