@@ -76,4 +76,12 @@ public enum CapabilityStringKey implements CapabilityKey {
     public String getString() {
         return CapabilityManager.getInstance().getString(this);
     }
+
+    /**
+     * This method returns true if this capability is a group
+     */
+    @Override
+    public boolean isGroup(){
+        return capabilityPath.endsWith(EXPRESSION_DELIMITOR)? true : false;
+    }
 }
