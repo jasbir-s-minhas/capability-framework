@@ -130,7 +130,9 @@ public class CapabilityManager {
         StringBuilder groupXpath = new StringBuilder();
 
         String[] tokens = key.toString().split(DELIMITER);
-        int numOfGroups = tokens.length - 1; // last one is not a group
+        int numOfGroups = key.isGroup()?
+                tokens.length: // the expression contains group only
+                tokens.length - 1; // last one is not a group
         for(int i=0; i < numOfGroups; i++){
             groupXpath.append(XPATH_PREFIX);
             groupXpath.append(tokens[i]);
@@ -161,7 +163,9 @@ public class CapabilityManager {
         StringBuilder groupXPath = new StringBuilder();
 
         String[] tokens = key.toString().split(DELIMITER);
-        int numOfGroups = tokens.length - 1; // last one is not a group
+        int numOfGroups = key.isGroup()?
+                tokens.length: // the expression contains group only
+                tokens.length - 1; // last one is not a group
         for(int i=0; i < numOfGroups; i++){
             groupXPath.append(XPATH_PREFIX);
             groupXPath.append(tokens[i]);

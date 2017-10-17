@@ -169,4 +169,13 @@ public enum CapabilityBooleanKey implements CapabilityKey {
     public boolean isEnabled() {
         return CapabilityManager.getInstance().getBoolean(this);
     }
+
+    /**
+     * This method returns true if this capability is a group
+     */
+    @Override
+    public boolean isGroup(){
+        return capabilityPath.endsWith(".")? true : false;
+    }
+
 }

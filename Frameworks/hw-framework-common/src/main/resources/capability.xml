@@ -9,23 +9,23 @@
         <capabilityGroup name="testGroup1L2">
             <enabled code="ON">true</enabled>
             <capability name="testStringCapability" type="string">
-                <value code="NS"/>
-                <value code="NB"/>
-                <value code="ON">abc</value>
+                <value code="NS">NS-String</value>
+                <value code="NB">NB-String</value>
+                <value code="ON">On-String</value>
             </capability>
             <capability name="testBooleanCapability" type="boolean">
-                <value code="NS"/>
-                <value code="NB"/>
+                <value code="NS">false</value>
+                <value code="NB">false</value>
                 <value code="ON">true</value>
             </capability>
             <capability name="testIntCapability" type="int">
-                <value code="NS"/>
-                <value code="NB"/>
+                <value code="NS">100</value>
+                <value code="NB">200</value>
                 <value code="ON">999</value>
             </capability>
             <capability name="testFloatCapability" type="boolean">
-                <value code="NS"/>
-                <value code="NB"/>
+                <value code="NS">1.5</value>
+                <value code="NB">2.5</value>
                 <value code="ON">10.9</value>
             </capability>
         </capabilityGroup>

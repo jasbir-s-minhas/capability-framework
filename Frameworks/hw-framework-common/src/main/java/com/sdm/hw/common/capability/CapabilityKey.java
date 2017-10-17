@@ -10,4 +10,6 @@ package com.sdm.hw.common.capability;
  */
 
 public interface CapabilityKey {
+    // indicates if current capability key represents a group or not.
+    boolean isGroup();
 }
