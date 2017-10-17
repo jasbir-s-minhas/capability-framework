@@ -74,4 +74,12 @@ public enum CapabilityFloatKey implements CapabilityKey{
 	public float getFloat() {
 	    return CapabilityManager.getInstance().getFloat(this);
 	}
+
+    /**
+     * This method returns true if this capability is a group
+     */
+    @Override
+    public boolean isGroup(){
+        return capabilityPath.endsWith(EXPRESSION_DELIMITOR)? true : false;
+    }
 }

@@ -76,4 +76,13 @@ public enum CapabilityIntKey implements CapabilityKey{
 		return CapabilityManager.getInstance().getInt(this);
 	}
 
+	/**
+	 * This method returns true if this capability is a group
+	 */
+	@Override
+	public boolean isGroup(){
+		return capabilityPath.endsWith(EXPRESSION_DELIMITOR)? true : false;
+	}
+
+
 }

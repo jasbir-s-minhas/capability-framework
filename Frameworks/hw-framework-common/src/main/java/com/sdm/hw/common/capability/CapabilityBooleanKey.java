@@ -48,6 +48,9 @@ public enum CapabilityBooleanKey implements CapabilityKey {
     // the following enum is for testing multilevel of groups with boolean capability during development process.
     TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testBooleanCapability"),
 
+    //eHealth Status
+    // Note: eHealth expression ends with a "." which indicates that it is a group
+    EHEALTH_ENABLED("eHealth."),
     //View ADR Status
     ADR_STATUS("eHealth.adrStatus"),
     //View replaced version status Changes for Allergy/Intolerance
@@ -175,7 +178,6 @@ public enum CapabilityBooleanKey implements CapabilityKey {
      */
     @Override
     public boolean isGroup(){
-        return capabilityPath.endsWith(".")? true : false;
+        return capabilityPath.endsWith(EXPRESSION_DELIMITOR)? true : false;
     }
-
 }

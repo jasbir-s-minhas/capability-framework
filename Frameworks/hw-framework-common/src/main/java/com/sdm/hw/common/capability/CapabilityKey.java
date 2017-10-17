@@ -10,6 +10,9 @@ package com.sdm.hw.common.capability;
  */
 
 public interface CapabilityKey {
+
+    // The regEx delimiter used in the expression
+    public static final String EXPRESSION_DELIMITOR = ".";
     // indicates if current capability key represents a group or not.
     boolean isGroup();
 }
