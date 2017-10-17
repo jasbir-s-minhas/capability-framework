@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * This framework class is implemented as a singleton pattern. It is the main class for loading and caching Capability
@@ -22,6 +23,14 @@ import java.util.logging.Logger;
 public class CapabilityManager {
     // Singleton Class initialization
     private static final CapabilityManager _instance;
+    // Following tokens are used for building XPath for a capability.
+    private static final String PROV_CODE_XPATH = "currentProv";
+    private static final String XPATH_PREFIX = "capabilityGroup[@name='";
+    private static final String CLOSE_BRACKET = "']";
+    private static final String FORWARD_SLASH = "/";
+    private static final String ENABLED_TAG = "enabled[@code='";
+    private static final String CAPABILITY_NAME_TAG = "capability[@name='";
+    private static final String VALUE_TAG = "value[@code='";
     private static Logger LOGGER = Logger.getLogger(CapabilityManager.class.getName());
     private static String currentProvCode;
 
@@ -32,20 +41,7 @@ public class CapabilityManager {
 
     // Loaded XMLConfiguraiton
     private XMLConfiguration config = null;
-
     private CapabilityCache capabilityCache = new CapabilityCache();
-
-    // Following tokens are used for building XPath for a capability.
-    // e.g.: capabilityGroup[@name='eHealth']/capability[name='correlationService']/value
-    // e.g.: capabilityGroup[@name='eHealth']/capability[@name='adrStatus']/value[@code='ON']
-    private static final String PROV_CODE_XPATH="currentProv";
-    private static final String XPATH_PREFIX = "capabilityGroup[@name='";
-    private static final String CLOSE_BRACKET = "']";
-    private static final String FORWARD_SLASH ="/";
-    private static final String DELIMITER = "\\.";
-    private static final String ENABLED_TAG = "enabled[@code='";
-    private static final String CAPABILITY_NAME_TAG ="capability[@name='";
-    private static final String VALUE_TAG="value[@code='";
 
     /**
      * Private constructor for singleton
@@ -82,25 +78,30 @@ public class CapabilityManager {
 
     /**
      * This method is used to determine if a capability is enable or not
+     *
      * @param key an enum of CapabilityKey type
      * @return boolean true or false
      */
     public boolean getBoolean(CapabilityKey key) {
-        Boolean capbilityEnabled = capabilityCache.getBoolean(key);
-        if (capbilityEnabled == null){ // capability is not cached yet.
-            if (isGroupEnabled(key)){
-                capbilityEnabled = config.getBoolean(getCapabiltyXpath(key));
+        Boolean enabled = capabilityCache.getBoolean(key);
+        if (enabled == null) { // capability  is not cached yet.
+            boolean groupEnabled = isGroupEnabled(key);
+            if (key.isGroup()) {
+                enabled = groupEnabled;
             } else {
-                capbilityEnabled = false;
+                if (groupEnabled){ // only check if group is enabled
+                    enabled = config.getBoolean(getCapabiltyXpath(key));
+                }
             }
             // add capability value to the cache
-            capabilityCache.setBoolean(key,capbilityEnabled);
+            capabilityCache.setBoolean(key, enabled);
         }
-        return capbilityEnabled;
+        return enabled;
     }
 
     /**
      * This method is used to return a text of the Capability
+     *
      * @param key an enum of CapabilityKey type
      * @return String a text value of the capability
      */
@@ -110,6 +111,7 @@ public class CapabilityManager {
 
     /**
      * This method is used to return a int value of a Capability
+     *
      * @param key an enum of CapabilityKey type
      * @return int an int value of the capability
      */
@@ -119,6 +121,7 @@ public class CapabilityManager {
 
     /**
      * This method is used to return a float value of a Capability
+     *
      * @param key an enum of CapabilityKey type
      * @return float a float value of the capability
      */
@@ -129,11 +132,11 @@ public class CapabilityManager {
     private String getGroupXPath(CapabilityKey key) {
         StringBuilder groupXpath = new StringBuilder();
 
-        String[] tokens = key.toString().split(DELIMITER);
-        int numOfGroups = key.isGroup()?
-                tokens.length: // the expression contains group only
+        String[] tokens = key.toString().split(Pattern.quote(key.EXPRESSION_DELIMITOR));
+        int numOfGroups = key.isGroup() ?
+                tokens.length : // the expression contains group only
                 tokens.length - 1; // last one is not a group
-        for(int i=0; i < numOfGroups; i++){
+        for (int i = 0; i < numOfGroups; i++) {
             groupXpath.append(XPATH_PREFIX);
             groupXpath.append(tokens[i]);
             groupXpath.append(CLOSE_BRACKET);
@@ -142,8 +145,8 @@ public class CapabilityManager {
         return groupXpath.toString();
     }
 
-    private String getCapabiltyXpath(CapabilityKey key){
-        String[] tokens = key.toString().split(DELIMITER);
+    private String getCapabiltyXpath(CapabilityKey key) {
+        String[] tokens = key.toString().split(Pattern.quote(key.EXPRESSION_DELIMITOR));
         String capability = tokens[tokens.length - 1];
         StringBuilder capabilityXPath = new StringBuilder();
         capabilityXPath.append(getGroupXPath(key));
@@ -154,7 +157,7 @@ public class CapabilityManager {
         capabilityXPath.append(VALUE_TAG);
         capabilityXPath.append(currentProvCode);
         capabilityXPath.append(CLOSE_BRACKET);
-        return  capabilityXPath.toString();
+        return capabilityXPath.toString();
     }
 
     private boolean isGroupEnabled(CapabilityKey key) {
@@ -162,16 +165,16 @@ public class CapabilityManager {
 
         StringBuilder groupXPath = new StringBuilder();
 
-        String[] tokens = key.toString().split(DELIMITER);
-        int numOfGroups = key.isGroup()?
-                tokens.length: // the expression contains group only
+        String[] tokens = key.toString().split(Pattern.quote(key.EXPRESSION_DELIMITOR));
+        int numOfGroups = key.isGroup() ?
+                tokens.length : // the expression contains group only
                 tokens.length - 1; // last one is not a group
-        for(int i=0; i < numOfGroups; i++){
+        for (int i = 0; i < numOfGroups; i++) {
             groupXPath.append(XPATH_PREFIX);
             groupXPath.append(tokens[i]);
             groupXPath.append(CLOSE_BRACKET);
             groupXPath.append(FORWARD_SLASH);
-            if (! config.getBoolean(groupXPath.toString()+ENABLED_TAG+currentProvCode+CLOSE_BRACKET)){
+            if (!config.getBoolean(groupXPath.toString() + ENABLED_TAG + currentProvCode + CLOSE_BRACKET)) {
                 // if any of the groups in hierarchy is disabled, all the sub group will be considered disabled
                 groupEnable = false;
                 break;
@@ -183,40 +186,45 @@ public class CapabilityManager {
     /**
      * Inner class encapsulating capability cache
      */
-    private class CapabilityCache{
+    private class CapabilityCache {
         // Hash map storing capability cache
         private Map<CapabilityKey, Object> cacheMap = new HashMap<>();
 
         // getters and setters
-        public Boolean getBoolean(CapabilityKey key){
+        public Boolean getBoolean(CapabilityKey key) {
             return (Boolean) cacheMap.get(key);
         }
-        public void setBoolean(CapabilityKey key, Boolean val){
+
+        public void setBoolean(CapabilityKey key, Boolean val) {
             cacheMap.put(key, val);
         }
 
-        private String getString(String key){
+        private String getString(String key) {
             return (String) cacheMap.get(key);
         }
-        private void setString(CapabilityKey key, String val){
+
+        private void setString(CapabilityKey key, String val) {
             cacheMap.put(key, val);
         }
 
-        private Integer getInt(CapabilityKey key){
+        private Integer getInt(CapabilityKey key) {
             return (Integer) cacheMap.get(key);
         }
-        private void setInt(CapabilityKey key, Integer val){
+
+        private void setInt(CapabilityKey key, Integer val) {
             cacheMap.put(key, val);
         }
 
-        private Float getFloat(CapabilityKey key){
+        private Float getFloat(CapabilityKey key) {
             return (Float) cacheMap.get(key);
         }
-        private void setFloat(CapabilityKey key, Float val){
+
+        private void setFloat(CapabilityKey key, Float val) {
             cacheMap.put(key, val);
         }
-        private boolean isCached(CapabilityKey key){
-            return  cacheMap.containsKey(key);
+
+        private boolean isCached(CapabilityKey key) {
+            return cacheMap.containsKey(key);
         }
     }
 }
