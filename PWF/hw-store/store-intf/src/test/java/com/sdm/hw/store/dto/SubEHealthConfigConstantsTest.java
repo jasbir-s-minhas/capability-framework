@@ -6,30 +6,31 @@ import org.junit.Test;
 
 import java.util.logging.Logger;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class SubEHealthConfigConstantsTest {
 
     private static Logger LOGGER = Logger.getLogger(SubEHealthConfigConstantsTest.class.getName());
 
+    protected StringBuilder stringBuilder = new StringBuilder();
+
     @Before
     public void setUp() throws Exception {
+        stringBuilder.append(System.lineSeparator());
     }
 
     @After
     public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void getRuleName() throws Exception {
+        LOGGER.info(stringBuilder.toString());
     }
 
     @Test
     public void contains() throws Exception {
         for (SubEHealthConfigConstants subEHealthConfigConstants : SubEHealthConfigConstants.values()){
-            LOGGER.info("...value of capability \"" + subEHealthConfigConstants.getRuleName()
-                    + "\" : " + subEHealthConfigConstants.isEnabled());
+            stringBuilder.append(this.getClass().getSimpleName());
+            stringBuilder.append(":");
+            stringBuilder.append(subEHealthConfigConstants.getRuleName());
+            stringBuilder.append("->");
+            stringBuilder.append(subEHealthConfigConstants.isEnabled());
+            stringBuilder.append(System.lineSeparator());
         }
     }
 }
