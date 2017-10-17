@@ -7,7 +7,7 @@ package com.sdm.hw.common.capability;
  * @since 2017-10-10
  */
 
-public enum ProvinceCode implements CapabilityKey{
+public enum ProvinceCode{
 	Alberta("AB"),
 	BritishColumbia("BC"),
 	Manitoba("MB"),
