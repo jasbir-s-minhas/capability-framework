@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * @since 2017-10-10
  */
 
-public class CapabilityFloatKeyTest {
+public class CapabilityFloatKeyTest extends CapabilityTest {
     private static Logger LOGGER = Logger.getLogger(CapabilityFloatKeyTest.class.getName());
 
     @Before
@@ -29,7 +29,8 @@ public class CapabilityFloatKeyTest {
 
     @Test
     public void getFloat() throws Exception {
-        LOGGER.info("getFloat...: " + CapabilityManager.getInstance()
-                .getFloat(CapabilityFloatKey.TEST_2_LEVEL_GROUP));
+        for (CapabilityIntKey key : CapabilityIntKey.values()) {
+            buildTestOutput(key, String.valueOf(capabilityManager.getFloat(key)));
+        }
     }
 }

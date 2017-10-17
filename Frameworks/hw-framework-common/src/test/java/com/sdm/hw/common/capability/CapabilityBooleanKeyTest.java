@@ -16,22 +16,12 @@ import static org.junit.Assert.*;
  * @since 2017-10-10
  */
 
-public class CapabilityBooleanKeyTest {
-
-    private static Logger LOGGER = Logger.getLogger(CapabilityBooleanKeyTest.class.getName());
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
+public class CapabilityBooleanKeyTest extends CapabilityTest {
 
     @Test
     public void isEnabled() throws Exception {
-        for (CapabilityBooleanKey capabilityBooleanKey : CapabilityBooleanKey.values()){
-            LOGGER.info("...value of capability \"" + capabilityBooleanKey + "\" : " + capabilityBooleanKey.isEnabled());
+        for (CapabilityBooleanKey key : CapabilityBooleanKey.values()) {
+            buildTestOutput(key, String.valueOf(capabilityManager.getBoolean(key)));
         }
     }
 

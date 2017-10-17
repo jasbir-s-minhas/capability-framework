@@ -16,22 +16,12 @@ import static org.junit.Assert.*;
  * @since 2017-10-10
  */
 
-public class CapabilityIntKeyTest {
-
-    private static Logger LOGGER = Logger.getLogger(CapabilityIntKeyTest.class.getName());
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
+public class CapabilityIntKeyTest extends CapabilityTest{
 
     @Test
     public void getInt() throws Exception {
-        LOGGER.info("getString...: " + CapabilityManager.getInstance()
-                .getFloat(CapabilityIntKey.TEST_2_LEVEL_GROUP));
+        for (CapabilityIntKey key : CapabilityIntKey.values()) {
+            buildTestOutput(key, String.valueOf(capabilityManager.getInt(key)));
+        }
     }
-
 }
