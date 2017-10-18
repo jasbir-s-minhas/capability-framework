@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Values xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="test.xsd">
+    <Value Code="Key1">Test</Value>
+    <Value Code="Kyy2">Test2</Value>
+    <!--<Add Key="Key1">Value 1</Add>-->
+    <!--<Add Key="Key2">Value 2</Add>-->
+    <!--<Add Key="Key3">Value 3</Add>-->
+    <!--<Add Key="Key4">Value 4</Add>-->
+</Values>
