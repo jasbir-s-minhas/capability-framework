@@ -12,6 +12,7 @@
                 <value code="NS">NS-String</value>
                 <value code="NB">NB-String</value>
                 <value code="ON">On-String</value>
+                <value code="NB">Test</value>
             </capability>
             <capability name="testBooleanCapability" type="boolean">
                 <value code="NS">false</value>
@@ -30,6 +31,16 @@
             </capability>
         </capabilityGroup>
     </capabilityGroup>
+    <capabilityGroup name="testGroup1L2-">
+        <enabled code="ON">true</enabled>
+        <capability name="testStringCapability3" type="string">
+            <value code="NS">NS-String</value>
+            <value code="NB">NB-String</value>
+            <value code="ON">On-String</value>
+            <value code="NB">Test</value>
+        </capability>
+    </capabilityGroup>
+
     <!--eHealth Capability Group-->
     <capabilityGroup name="eHealth">
         <enabled code="NS">true</enabled>
