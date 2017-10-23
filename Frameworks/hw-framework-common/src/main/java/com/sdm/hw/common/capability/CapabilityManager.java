@@ -56,7 +56,8 @@ public class CapabilityManager {
     private void init() {
         initConfig("capability.xml", true);
         config.setExpressionEngine(new XPathExpressionEngine());
-        currentProvCode = config.getString(PROV_CODE_XPATH);
+//        currentProvCode = config.getString(PROV_CODE_XPATH);
+        currentProvCode = ProvinceCode.getCurrentProvinceCode().toString();
     }
 
     private void initConfig(String xmlConfigFile, boolean validate) {
