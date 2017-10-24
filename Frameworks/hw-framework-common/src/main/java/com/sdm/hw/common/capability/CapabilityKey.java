@@ -1,6 +1,6 @@
 package com.sdm.hw.common.capability;
+
 /**
- *
  * This is a marker interface which is used by Capability Framework to make sure that an appropriate type of enum
  * is passed to CapabilityManager.
  *
@@ -11,8 +11,12 @@ package com.sdm.hw.common.capability;
 
 public interface CapabilityKey {
 
-    // The regEx delimiter used in the expression
-    public static final String EXPRESSION_DELIMITOR = ".";
-    // indicates if current capability key represents a group or not.
+    //The regEx delimiter used in the expression
+    String EXPRESSION_DELIMITOR = ".";
+
+    /**
+     * indicates if current capability key represents a group or not.
+     * @return group Boolean Indicator
+     */
     boolean isGroup();
 }

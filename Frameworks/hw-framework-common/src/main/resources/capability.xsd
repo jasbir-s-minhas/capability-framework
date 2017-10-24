@@ -102,14 +102,4 @@
             <!--<xs:enumeration value="YT"/>-->
         </xs:restriction>
 	</xs:simpleType>
-
-
-    <!--<xs:complexType name="CapabilityType">-->
-    <!--    <xs:sequence>-->
-    <!--        <xs:element name="name" type="xs:token" minOccurs="1" maxOccurs="1"/>-->
-    <!--        <xs:element name="value" type="ValueType" minOccurs="1" maxOccurs="1"/>-->
-    <!--    </xs:sequence>-->
-    <!--    <xs:attribute name="name" type="xs:token" use="required"/>-->
-    <!--    <xs:attribute name="type" type="CapabilityAttribType" use="required"/>-->
-    <!--</xs:complexType>-->
 </xs:schema>

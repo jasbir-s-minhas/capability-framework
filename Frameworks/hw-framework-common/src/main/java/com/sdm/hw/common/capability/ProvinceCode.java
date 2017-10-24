@@ -1,4 +1,5 @@
 package com.sdm.hw.common.capability;
+
 /**
  * This enum representing ProvinceCode Code:
  *
@@ -7,35 +8,34 @@ package com.sdm.hw.common.capability;
  * @since 2017-10-10
  */
 
-public enum ProvinceCode{
-	Alberta("AB"),
-	BritishColumbia("BC"),
-	Manitoba("MB"),
-	NewBrunswick("NB"),
-	NewfoundlandAndLabrador("NL"),
-	NorthwestTerritories("NT"),
-	NovaScotia("NS"),
-	Nunavut("NU"),
-	Ontario("ON"),
-	PrinceEdwardIsland("PE"),
-	Quebec("QC"),
-	Saskatchewan("SK"),
-	Yukon("YT");
+public enum ProvinceCode {
+    ALBERTA("AB"),
+    BRITISH_COLUMBIA("BC"),
+    MANITOBA("MB"),
+    NEW_BRUNSWICK("NB"),
+    NEWFOUNDLAND_AND_LABRADOR("NL"),
+    NORTHWEST_TERRITORIES("NT"),
+    NOVA_SCOTIA("NS"),
+    NUNAVUT("NU"),
+    ONTARIO("ON"),
+    PRINCE_EDWARD_ISLAND("PE"),
+    QUEBEC("QC"),
+    SASKATCHEWAN("SK"),
+    YUKON("YT");
 
 
-	/**
-     *  a String representing a path to the capability
+    /**
+     * a String representing a path to the capability
      */
-    private final String provinceCode;
+    private final String code;
 
     /**
      * constructor for Enum
-	 *
-     * @param provinceCode String representing the province code.
      *
+     * @param provinceCode String representing the province code.
      */
     ProvinceCode(final String provinceCode) {
-        this.provinceCode = provinceCode;
+        this.code = provinceCode;
     }
 
     /**
@@ -43,6 +43,6 @@ public enum ProvinceCode{
      */
     @Override
     public String toString() {
-        return provinceCode;
+        return code;
     }
 }

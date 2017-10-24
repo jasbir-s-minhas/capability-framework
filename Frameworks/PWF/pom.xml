@@ -1,0 +1,293 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.sdm.hw.business-components</groupId>
+	<artifactId>parent</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<name>Delta</name>
+
+	<modules>
+<!-- various modules -->
+		<module>../Frameworks</module>
+		<!--<module>hw-store/store-intf</module>-->
+		<module>hw-store</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Framework dependencies -->
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+				<artifactId>hw-framework-exception</artifactId>
+				<version>1.1</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+  				<artifactId>hw-base-delegate</artifactId>
+  				<version>1.0</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+				<artifactId>hw-framework-logging</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+				<artifactId>hw-framework-persistence</artifactId>
+				<version>1.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+				<artifactId>hw-framework-service-invocation</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<!-- END -->
+
+			<!-- Common Dependencies -->
+			<dependency>
+				<groupId>com.sdm.hw.business-components</groupId>
+				<artifactId>entities</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hw.common-utilities</groupId>
+				<artifactId>hw-common-record</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hw.common-utilities</groupId>
+				<artifactId>hw-common-util</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hw.common-utilities</groupId>
+				<artifactId>hw-common-services</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<!-- END -->
+
+			<!-- Test Dependencies -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.8.5</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>1.8.5</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<version>3.0</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>jmock</groupId>
+				<artifactId>jmock</artifactId>
+				<version>1.2.0</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- END -->
+
+			<!-- Old project Dependencies -->
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+				<artifactId>pharmacy-core</artifactId>
+				<version>2.0.2.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+				<artifactId>pharmacy-core-model</artifactId>
+				<version>2.0.2.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hw</groupId>
+				<artifactId>pharmacy-core-util</artifactId>
+				<version>2.0.2.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sdm.hl7</groupId>
+				<artifactId>hw-hl7-datatype</artifactId>
+				<version>0.0.3.1-SNAPSHOT</version>
+			</dependency>
+
+			
+			<!-- END -->
+
+			<!-- Third Party Dependencies -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-envers</artifactId>
+				<version>4.1.1.Final</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-remoting</artifactId>
+				<version>2.0.8</version>
+			</dependency>
+			
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>3.2.1.RELEASE</version>
+		</dependency>
+		
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.15.0-GA</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>4.1.1.Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>4.1.1.Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.0.0.CR1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>3.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm-attrs</artifactId>
+				<version>1.5.3</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+				<version>2.2.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>1.2.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>3.2.1.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+			
+			<!-- END -->
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.1</version>
+					<configuration>
+						<fork>true</fork>
+    					<meminitial>512m</meminitial>
+   					   	<maxmem>1024m</maxmem>
+					<encoding>cp1252</encoding>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+ 
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

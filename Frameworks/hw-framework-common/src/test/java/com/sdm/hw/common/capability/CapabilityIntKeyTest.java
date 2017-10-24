@@ -1,12 +1,6 @@
 package com.sdm.hw.common.capability;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-
-import java.util.logging.Logger;
-
-import static org.junit.Assert.*;
 
 /**
  * This is JUnit test class for testing CapabilityIntKeyTest classs
@@ -17,11 +11,10 @@ import static org.junit.Assert.*;
  */
 
 public class CapabilityIntKeyTest extends CapabilityTest{
-
     @Test
     public void getInt() throws Exception {
         for (CapabilityIntKey key : CapabilityIntKey.values()) {
-            buildTestOutput(key, String.valueOf(capabilityManager.getInt(key)));
+            buildTestOutput(key, String.valueOf(key.getInt()));
         }
     }
 }

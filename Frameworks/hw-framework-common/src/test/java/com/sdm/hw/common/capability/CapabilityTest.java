@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 abstract public class CapabilityTest {
     private static Logger LOGGER = Logger.getLogger(CapabilityTest.class.getName());
 
-    protected StringBuilder stringBuilder = new StringBuilder();
+    private StringBuilder stringBuilder = new StringBuilder();
 
-    protected CapabilityManager capabilityManager = CapabilityManager.getInstance();
+    CapabilityManager capabilityManager = CapabilityManager.getInstance();
 
     @Before
     public void setUp() throws Exception {
@@ -22,7 +22,7 @@ abstract public class CapabilityTest {
         LOGGER.info(stringBuilder.toString());
     }
 
-    protected void buildTestOutput(CapabilityKey key, String keyVal){
+    void buildTestOutput(CapabilityKey key, String keyVal){
         stringBuilder.append(key.getClass().getSimpleName());
         stringBuilder.append(":");
         stringBuilder.append(key);

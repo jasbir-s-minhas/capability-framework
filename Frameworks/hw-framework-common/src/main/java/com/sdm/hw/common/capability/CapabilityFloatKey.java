@@ -1,4 +1,5 @@
 package com.sdm.hw.common.capability;
+
 /**
  * This enum works with CapabilityManager class. Following steps should be performed to add a new
  * float capability:
@@ -37,23 +38,22 @@ package com.sdm.hw.common.capability;
  * @since 2017-10-10
  */
 
-public enum CapabilityFloatKey implements CapabilityKey{
+public enum CapabilityFloatKey implements CapabilityKey {
     // the following enum is for testing multilevel of groups with float capability during development process.
     TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testFloatCapability");
 
     /**
-     *  a string representing a path to the capability
+     * a string representing a path to the capability
      */
     private final String capabilityPath;
 
     /**
      * constructor for Enum
-	 * The capabilityPath passed as a parameter should in the the following format:
-	 *    capabilityGroupName.[capabilityGroupName].capabiltyName
-	 *    A capability name can be under one group level of multi-level groups
-	 *
-     * @param capabilityPath String representing the capability path.
+     * The capabilityPath passed as a parameter should in the the following format:
+     * capabilityGroupName.[capabilityGroupName].capabiltyName
+     * A capability name can be under one group level of multi-level groups
      *
+     * @param capabilityPath String representing the capability path.
      */
     CapabilityFloatKey(final String capabilityPath) {
         this.capabilityPath = capabilityPath;
@@ -67,19 +67,20 @@ public enum CapabilityFloatKey implements CapabilityKey{
         return capabilityPath;
     }
 
-	/**
-	 * This method returns the capability int value based on the key of current enum instance
-	 * @return capability string
-	 */
-	public float getFloat() {
-	    return CapabilityManager.getInstance().getFloat(this);
-	}
+    /**
+     * This method returns the capability int value based on the key of current enum instance
+     *
+     * @return capability string
+     */
+    public float getFloat() {
+        return CapabilityManager.getInstance().getFloat(this);
+    }
 
     /**
      * This method returns true if this capability is a group
      */
     @Override
-    public boolean isGroup(){
-        return capabilityPath.endsWith(EXPRESSION_DELIMITOR)? true : false;
+    public boolean isGroup() {
+        return capabilityPath.endsWith(EXPRESSION_DELIMITOR);
     }
 }

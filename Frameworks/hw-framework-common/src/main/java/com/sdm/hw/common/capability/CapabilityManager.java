@@ -20,26 +20,26 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @since 2017-10-10
  */
-public class CapabilityManager {
+public final class CapabilityManager {
     // Singleton Class initialization
     private static final CapabilityManager _instance;
+    private static final String CAPABILITY_CONFIG_FILE = "capability.xml";
     // Following tokens are used for building XPath for a capability.
-    private static final String PROV_CODE_XPATH = "currentProv";
     private static final String XPATH_PREFIX = "capabilityGroup[@name='";
     private static final String CLOSE_BRACKET = "']";
     private static final String FORWARD_SLASH = "/";
     private static final String ENABLED_TAG = "enabled[@code='";
     private static final String CAPABILITY_NAME_TAG = "capability[@name='";
     private static final String VALUE_TAG = "value[@code='";
-    private static Logger LOGGER = Logger.getLogger(CapabilityManager.class.getName());
-    private static String currentProvCode;
+    private static final Logger LOGGER = Logger.getLogger(CapabilityManager.class.getName());
 
     static {
         _instance = new CapabilityManager();
         _instance.init();
     }
 
-    // Loaded XMLConfiguraiton
+    private String currentProvCode;
+    // Loaded XMLConfiguration
     private XMLConfiguration config = null;
     private CapabilityCache capabilityCache = new CapabilityCache();
 
@@ -54,20 +54,19 @@ public class CapabilityManager {
     }
 
     private void init() {
-        initConfig("capability.xml", true);
+        initConfig();
         config.setExpressionEngine(new XPathExpressionEngine());
-//        currentProvCode = config.getString(PROV_CODE_XPATH);
-        currentProvCode = ProvinceCode.getCurrentProvinceCode().toString();
+        currentProvCode = ProvinceCodeProvider.getInstance().getCurrentProvinceCode().toString();
     }
 
-    private void initConfig(String xmlConfigFile, boolean validate) {
+    private void initConfig() {
         Parameters params = new Parameters();
         try {
             FileBasedConfigurationBuilder<XMLConfiguration> builder =
                     new FileBasedConfigurationBuilder<>(XMLConfiguration.class)
                             .configure(params.xml()
-                                    .setFileName(xmlConfigFile)
-                                    .setSchemaValidation(validate));
+                                    .setFileName(CAPABILITY_CONFIG_FILE)
+                                    .setSchemaValidation(true));
             // This will throw a ConfigurationException if the XML document does not
             // conform to its schema.
             config = builder.getConfiguration();
@@ -90,9 +89,8 @@ public class CapabilityManager {
             if (key.isGroup()) {
                 enabled = groupEnabled;
             } else {
-                if (groupEnabled){ // only check if group is enabled
-                    enabled = config.getBoolean(getCapabiltyXpath(key));
-                }
+                // both group and key should be true for a capability to be true
+                enabled = groupEnabled && config.getBoolean(getCapabiltyXpath(key));
             }
             // add capability value to the cache
             capabilityCache.setBoolean(key, enabled);
@@ -107,7 +105,13 @@ public class CapabilityManager {
      * @return String a text value of the capability
      */
     public String getString(CapabilityKey key) {
-        return config.getString(getCapabiltyXpath(key));
+        String val = capabilityCache.getString(key);
+        if (val == null) {// capability  is not cached yet.
+            val = config.getString(getCapabiltyXpath(key));
+            // add capability value to the cache
+            capabilityCache.setString(key, val);
+        }
+        return val;
     }
 
     /**
@@ -117,7 +121,13 @@ public class CapabilityManager {
      * @return int an int value of the capability
      */
     public int getInt(CapabilityKey key) {
-        return config.getInt(getCapabiltyXpath(key));
+        Integer val = capabilityCache.getInt(key);
+        if (val == null) {// capability  is not cached yet.
+            val = config.getInt(getCapabiltyXpath(key));
+            // add capability value to the cache
+            capabilityCache.setInt(key, val);
+        }
+        return val;
     }
 
     /**
@@ -127,13 +137,19 @@ public class CapabilityManager {
      * @return float a float value of the capability
      */
     public float getFloat(CapabilityKey key) {
-        return config.getFloat(getCapabiltyXpath(key));
+        Float val = capabilityCache.getFloat(key);
+        if (val == null) {// capability  is not cached yet.
+            val = config.getFloat(getCapabiltyXpath(key));
+            // add capability value to the cache
+            capabilityCache.setFloat(key, val);
+        }
+        return val;
     }
 
     private String getGroupXPath(CapabilityKey key) {
         StringBuilder groupXpath = new StringBuilder();
 
-        String[] tokens = key.toString().split(Pattern.quote(key.EXPRESSION_DELIMITOR));
+        String[] tokens = key.toString().split(Pattern.quote(CapabilityKey.EXPRESSION_DELIMITOR));
         int numOfGroups = key.isGroup() ?
                 tokens.length : // the expression contains group only
                 tokens.length - 1; // last one is not a group
@@ -147,7 +163,7 @@ public class CapabilityManager {
     }
 
     private String getCapabiltyXpath(CapabilityKey key) {
-        String[] tokens = key.toString().split(Pattern.quote(key.EXPRESSION_DELIMITOR));
+        String[] tokens = key.toString().split(Pattern.quote(CapabilityKey.EXPRESSION_DELIMITOR));
         String capability = tokens[tokens.length - 1];
         StringBuilder capabilityXPath = new StringBuilder();
         capabilityXPath.append(getGroupXPath(key));
@@ -166,7 +182,7 @@ public class CapabilityManager {
 
         StringBuilder groupXPath = new StringBuilder();
 
-        String[] tokens = key.toString().split(Pattern.quote(key.EXPRESSION_DELIMITOR));
+        String[] tokens = key.toString().split(Pattern.quote(CapabilityKey.EXPRESSION_DELIMITOR));
         int numOfGroups = key.isGroup() ?
                 tokens.length : // the expression contains group only
                 tokens.length - 1; // last one is not a group
@@ -187,20 +203,20 @@ public class CapabilityManager {
     /**
      * Inner class encapsulating capability cache
      */
-    private class CapabilityCache {
+    private static class CapabilityCache {
         // Hash map storing capability cache
         private Map<CapabilityKey, Object> cacheMap = new HashMap<>();
 
         // getters and setters
-        public Boolean getBoolean(CapabilityKey key) {
+        private Boolean getBoolean(CapabilityKey key) {
             return (Boolean) cacheMap.get(key);
         }
 
-        public void setBoolean(CapabilityKey key, Boolean val) {
+        private void setBoolean(CapabilityKey key, Boolean val) {
             cacheMap.put(key, val);
         }
 
-        private String getString(String key) {
+        private String getString(CapabilityKey key) {
             return (String) cacheMap.get(key);
         }
 
@@ -222,10 +238,6 @@ public class CapabilityManager {
 
         private void setFloat(CapabilityKey key, Float val) {
             cacheMap.put(key, val);
-        }
-
-        private boolean isCached(CapabilityKey key) {
-            return cacheMap.containsKey(key);
         }
     }
 }

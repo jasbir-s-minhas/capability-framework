@@ -15,7 +15,7 @@ public class CapabilityStringKeyTest extends CapabilityTest{
     @Test
     public void getString() throws Exception {
         for (CapabilityStringKey key : CapabilityStringKey.values()) {
-            buildTestOutput(key, capabilityManager.getString(key));
+            buildTestOutput(key, key.getString());
         }
     }
 }

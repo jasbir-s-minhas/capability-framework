@@ -1,4 +1,5 @@
 package com.sdm.hw.common.capability;
+
 /**
  * This enum works with CapabilityManager class. Following steps should be performed to add a new
  * String capability:
@@ -26,7 +27,7 @@ package com.sdm.hw.common.capability;
  *      		<capability>
  *      			<name>testFloatCapability</name>
  *      			<value type="float">10.9</value>
-
+ *
  *      		</capability>\
  *      	</capabilityGroup>
  *      </capabilityGroup>
@@ -83,7 +84,7 @@ public enum CapabilityStringKey implements CapabilityKey {
      * This method returns true if this capability is a group
      */
     @Override
-    public boolean isGroup(){
-        return capabilityPath.endsWith(EXPRESSION_DELIMITOR)? true : false;
+    public boolean isGroup() {
+        return capabilityPath.endsWith(EXPRESSION_DELIMITOR);
     }
 }

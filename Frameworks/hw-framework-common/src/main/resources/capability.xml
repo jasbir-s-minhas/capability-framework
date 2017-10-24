@@ -7,6 +7,8 @@
         <enabled code="NB">true</enabled>
         <enabled code="ON">true</enabled>
         <capabilityGroup name="testGroup1L2">
+            <enabled code="NS">false</enabled>
+            <enabled code="NB">true</enabled>
             <enabled code="ON">true</enabled>
             <capability name="testStringCapability" type="string">
                 <value code="NS">NS-String</value>
@@ -15,7 +17,7 @@
                 <value code="NB">Test</value>
             </capability>
             <capability name="testBooleanCapability" type="boolean">
-                <value code="NS">false</value>
+                <value code="NS">true</value>
                 <value code="NB">false</value>
                 <value code="ON">true</value>
             </capability>
