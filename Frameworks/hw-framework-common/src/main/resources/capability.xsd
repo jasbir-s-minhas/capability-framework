@@ -10,7 +10,6 @@
 	<xs:element name="capabilityConfig">
 		<xs:complexType>
 			<xs:sequence>
-                <xs:element name="currentProv" type="ProvCodeEnumType" minOccurs="1" maxOccurs="1"/>
 				<xs:element name="capabilityGroup" type="CapabilityGroupType" minOccurs="1" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>

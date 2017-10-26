@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <capabilityConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="capability.xsd">
-    <currentProv>ON</currentProv>
-    <!-- A test group for testing the capability frame. Meant to be used for testing and an example only. -->
+    <!-- A test group for testing the capability framework. Meant to be used for testing and an example only. -->
     <capabilityGroup name="testGroup1L1">
         <enabled code="NS">true</enabled>
         <enabled code="NB">true</enabled>
@@ -42,7 +41,6 @@
             <value code="NB">Test</value>
         </capability>
     </capabilityGroup>
-
     <!--eHealth Capability Group-->
     <capabilityGroup name="eHealth">
         <enabled code="NS">true</enabled>
