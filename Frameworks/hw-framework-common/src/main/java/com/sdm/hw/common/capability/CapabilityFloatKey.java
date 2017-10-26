@@ -78,6 +78,9 @@ public enum CapabilityFloatKey implements CapabilityKey {
 
     /**
      * This method returns true if this capability is a group
+     * TODO: Due to Java 7 limitation this method can't be implemented in the CapabilityKey interface.
+     * TODO: This method should be moved to CapabilityKey interface and deleted from the CapabilityKey subclasses
+     * @return true if the current expression represents a group
      */
     @Override
     public boolean isGroup() {
