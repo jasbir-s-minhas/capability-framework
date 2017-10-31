@@ -21,12 +21,13 @@ public class TestDynamicProps {
 
     public static void main(String[] args) throws Exception {
 
-        try {
+//        try {
+//            test1();
 //            test2();
             test3();
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
+//        } catch (Exception ex){
+//            ex.printStackTrace();
+//        }
     }
 
     private static void test1() throws Exception {
@@ -58,10 +59,15 @@ public class TestDynamicProps {
         execute(builder, string);
     }
 
-    private static void execute(FileBasedConfigurationBuilder builder, String string) throws Exception {
+    private static void execute(FileBasedConfigurationBuilder builder, String string){
+
         while (true) {
-            Thread.sleep(5000);
-            System.out.println(System.currentTimeMillis() + " : " + builder.getConfiguration().getString(string));
+            try {
+                Thread.sleep(5000);
+                System.out.println(System.currentTimeMillis() + " : " + builder.getConfiguration().getString(string));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -88,8 +94,19 @@ public class TestDynamicProps {
         Parameters params = new Parameters();
         final ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder =
                 new ReloadingFileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
-                        .configure(params.fileBased()
-                                .setFile(new File("C:\\workspace\\Delta\\capability-framework\\config\\database_ext.xml")));
+//                        .configure(params.fileBased()
+//                                .setFile(new File("C:\\workspace\\Delta\\capability-framework\\config\\database_ext.xml")));
+//                                .setFileName(CAPABILITY_CONFIG_FILE));
+//                                .setSchemaValidation(true))
+                        .configure(params.xml()
+                                    .setFileName(CAPABILITY_CONFIG_FILE)
+                                    .setSchemaValidation(true));
+
+
+
+
+
+//        builder.getConfiguration().setSchemaValidation(true);
         builder.getConfiguration().setExpressionEngine(new XPathExpressionEngine());
         System.out.println("Expression Engine:" + builder.getConfiguration().getExpressionEngine().getClass().getName());
 
@@ -113,6 +130,7 @@ public class TestDynamicProps {
                 System.out.println("Event:" + event);
                 try {
                     builder.getConfiguration().setExpressionEngine(new XPathExpressionEngine());
+                    builder.getConfiguration().setSchemaValidation(true);
                     System.out.println("Expression Engine:" + builder.getConfiguration().getExpressionEngine().getClass().getName());
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -122,7 +140,8 @@ public class TestDynamicProps {
 
 
 //        String string = "tables.table(0).name";
-        String string = "tables/table[1]/name";
+//        String string = "tables/table[1]/name";
+        String string = "capabilityGroup[@name='eHealth']/capability[@name='decnBusinessEntityType']/value[@code='NS']";
         execute(builder, string);
     }
 }
