@@ -1,7 +1,10 @@
 package com.sdm.hw.common.capability;
 
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.configuration2.builder.ConfigurationBuilderEvent;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.ReloadingFileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.event.EventListener;
@@ -18,50 +21,56 @@ public class TestDynamicProps {
 
     public static void main(String[] args) throws Exception {
 
+        try {
+//            test2();
+            test3();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
+    private static void test1() throws Exception {
         Parameters params = new Parameters();
-//        ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder2 =
-//                new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
-//                        .configure(params.xml()
-//                                .setFileName(CAPABILITY_CONFIG_FILE)
-//                                .setSchemaValidation(true));
-
-        final ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder =
-                new ReloadingFileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
+        ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder =
+                new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
                         .configure(params.xml()
-                                .setFile(new File(CAPABILITY_CONFIG_FILE))
-//                                .setFileName(CAPABILITY_CONFIG_FILE)
+                                .setFileName(CAPABILITY_CONFIG_FILE)
                                 .setSchemaValidation(true));
-
-
-        // Register an event listener for triggering reloading checks
-//        builder.addEventListener(ConfigurationBuilderEvent.CONFIGURATION_REQUEST,
-//                new EventListener<ConfigurationBuilderEvent>()
-//                {
-//                    @Override
-//                    public void onEvent(ConfigurationBuilderEvent event)
-//                    {
-//                        builder.getReloadingController().checkForReloading(null);
-//                    }
-//                });
 
         try {
             // This will throw a ConfigurationException if the XML document does not
             // conform to its schema.
-            XMLConfiguration config = null;
-            config = builder.getConfiguration();
-            config.setExpressionEngine(new XPathExpressionEngine());
+            builder.getConfiguration().setExpressionEngine(new XPathExpressionEngine());
         } catch (ConfigurationException cex) {
             // loading of the configuration file failed
             cex.printStackTrace();
         }
+        PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
+                null, 1, TimeUnit.SECONDS);
+        trigger.start();
 
-        ///
-//        Parameters params = new Parameters();
-//        ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration> builder =
-//                new ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
-//                        .configure(params.fileBased()
-//                                .setFile(new File("override.properties")));
+        builder.addEventListener(ConfigurationBuilderEvent.ANY, new EventListener<ConfigurationBuilderEvent>() {
+            public void onEvent(ConfigurationBuilderEvent event) {
+                System.out.println("Event:" + event);
+            }
+        });
+        String string = "capabilityGroup[@name='eHealth']/capability[@name='decnBusinessEntityType']/value[@code='NS']";
+        execute(builder, string);
+    }
+
+    private static void execute(FileBasedConfigurationBuilder builder, String string) throws Exception {
+        while (true) {
+            Thread.sleep(5000);
+            System.out.println(System.currentTimeMillis() + " : " + builder.getConfiguration().getString(string));
+        }
+    }
+
+    private static void test2() throws Exception{
+        Parameters params = new Parameters();
+        ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                new ReloadingFileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+                        .configure(params.fileBased()
+                                .setFile(new File("C:\\workspace\\Delta\\capability-framework\\config\\override_ext.properties")));
         PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
                 null, 1, TimeUnit.SECONDS);
         trigger.start();
@@ -72,10 +81,48 @@ public class TestDynamicProps {
                 System.out.println("Event:" + event);
             }
         });
-        while (true) {
-            Thread.sleep(5000);
-            System.out.println(builder.getConfiguration().getString("capabilityGroup[@name='eHealth']/capability[@name='decnBusinessEntityType']/value[@code='NS']"));
-        }
+        execute(builder, "property1");
+    }
 
+    private static void test3() throws Exception{
+        Parameters params = new Parameters();
+        final ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder =
+                new ReloadingFileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
+                        .configure(params.fileBased()
+                                .setFile(new File("C:\\workspace\\Delta\\capability-framework\\config\\database_ext.xml")));
+        builder.getConfiguration().setExpressionEngine(new XPathExpressionEngine());
+        System.out.println("Expression Engine:" + builder.getConfiguration().getExpressionEngine().getClass().getName());
+
+        PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
+                null, 1, TimeUnit.SECONDS);
+        trigger.start();
+
+//        builder.addEventListener(ConfigurationBuilderEvent.ANY, new EventListener<ConfigurationBuilderEvent>() {
+//            public void onEvent(ConfigurationBuilderEvent event) {
+//                System.out.println("Event:" + event);
+//                try {
+//                    System.out.println(builder.getConfiguration().getExpressionEngine().getClass().getName());
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        });
+
+        builder.addEventListener(ConfigurationBuilderEvent.RESET, new EventListener<ConfigurationBuilderEvent>() {
+            public void onEvent(ConfigurationBuilderEvent event) {
+                System.out.println("Event:" + event);
+                try {
+                    builder.getConfiguration().setExpressionEngine(new XPathExpressionEngine());
+                    System.out.println("Expression Engine:" + builder.getConfiguration().getExpressionEngine().getClass().getName());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+
+//        String string = "tables.table(0).name";
+        String string = "tables/table[1]/name";
+        execute(builder, string);
     }
 }
