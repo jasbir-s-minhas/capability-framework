@@ -9,17 +9,30 @@ import org.apache.commons.configuration2.builder.ReloadingFileBasedConfiguration
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.event.EventListener;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.*;
 import org.apache.commons.configuration2.reloading.PeriodicReloadingTrigger;
 import org.apache.commons.configuration2.tree.xpath.XPathExpressionEngine;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TestDynamicProps {
 
-    private static final String CAPABILITY_CONFIG_FILE = "capability.xml";
+    private static final String CAPABILITY_CONFIG_FILE = "capability-Test.xml";
 
     public static void main(String[] args) throws Exception {
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+
+        URL[] urls = ((URLClassLoader)cl).getURLs();
+
+        for(URL url: urls){
+            System.out.println(url.getFile());
+        }
+
 
 //        try {
 //            test1();
@@ -31,10 +44,18 @@ public class TestDynamicProps {
     }
 
     private static void test1() throws Exception {
+
+        List<FileLocationStrategy> subs = Arrays.asList(
+                new ProvidedURLLocationStrategy(),
+                new FileSystemLocationStrategy(),
+                new ClasspathLocationStrategy());
+        FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
         Parameters params = new Parameters();
+
         ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder =
                 new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
                         .configure(params.xml()
+                                .setLocationStrategy(strategy)
                                 .setFileName(CAPABILITY_CONFIG_FILE)
                                 .setSchemaValidation(true));
 

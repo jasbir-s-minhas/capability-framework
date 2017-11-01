@@ -10,10 +10,17 @@
 	<xs:element name="capabilityConfig">
 		<xs:complexType>
 			<xs:sequence>
-                <xs:element name="currentProv" type="ProvCodeEnumType" minOccurs="1" maxOccurs="1"/>
 				<xs:element name="capabilityGroup" type="CapabilityGroupType" minOccurs="1" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
+        <xs:unique name="uniqueCapabilityGroup">
+            <xs:selector xpath=".//capabilityGroup"/>
+            <xs:field xpath="@name"/>
+        </xs:unique>
+        <xs:unique name="uniqueCapability">
+            <xs:selector xpath=".//capability"/>
+            <xs:field xpath="@name"/>
+        </xs:unique>
 	</xs:element>
 
 	<!-- CapabilityGroupType definition -->
@@ -46,10 +53,6 @@
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
-                <xs:unique name="uniqueValue">
-                    <xs:selector xpath="value"/>
-                    <xs:field xpath="@code"/>
-                </xs:unique>
             </xs:element>
 		</xs:sequence>
         <xs:attribute name="name" type="xs:token" use="required"/>
@@ -98,14 +101,4 @@
             <!--<xs:enumeration value="YT"/>-->
         </xs:restriction>
 	</xs:simpleType>
-
-
-    <!--<xs:complexType name="CapabilityType">-->
-    <!--    <xs:sequence>-->
-    <!--        <xs:element name="name" type="xs:token" minOccurs="1" maxOccurs="1"/>-->
-    <!--        <xs:element name="value" type="ValueType" minOccurs="1" maxOccurs="1"/>-->
-    <!--    </xs:sequence>-->
-    <!--    <xs:attribute name="name" type="xs:token" use="required"/>-->
-    <!--    <xs:attribute name="type" type="CapabilityAttribType" use="required"/>-->
-    <!--</xs:complexType>-->
 </xs:schema>
