@@ -39,6 +39,7 @@ public final class CapabilityManager {
     private static final String CAPABILITY_NAME_TAG = "capability[@name='";
     private static final String VALUE_TAG = "value[@code='";
     private static final Logger LOGGER = Logger.getLogger(CapabilityManager.class.getName());
+    private static final boolean ENABLE_LOCAL_CACHE = false;
 
     static {
         _instance = new CapabilityManager();
@@ -47,7 +48,8 @@ public final class CapabilityManager {
 
     private String curProvinceCode;
     // Loaded XMLConfiguration
-    private XMLConfiguration config = null;
+//    private XMLConfiguration config = null;
+    private ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder = null;
     private CapabilityCache capabilityCache = new CapabilityCache();
 
     /**
@@ -71,41 +73,56 @@ public final class CapabilityManager {
         FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
 
         Parameters params = new Parameters();
-        final ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder =
-                new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
-                        .configure(params.xml()
-                                .setLocationStrategy(strategy)
-                                .setFileName(CAPABILITY_CONFIG_FILE)
-                                // Following will throw an Exception if the XML document does not
-                                // conform to its schema.
-                                .setSchemaValidation(true)
-                                .setExpressionEngine(new XPathExpressionEngine()));
-        try {
-            config = builder.getConfiguration();
-            LOGGER.log(Level.INFO, "Loading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
-        } catch (ConfigurationException conEx) {
-            LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
-        }
+        builder = new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
+                .configure(params.xml()
+                        .setLocationStrategy(strategy)
+                        .setFileName(CAPABILITY_CONFIG_FILE)
+                        // Following will throw an Exception if the XML document does not
+                        // conform to its schema.
+                        .setSchemaValidation(true)
+                        .setExpressionEngine(new XPathExpressionEngine()));
+
         PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
                 null, 1, TimeUnit.SECONDS);
         trigger.start();
 
+        LOGGER.log(Level.INFO, "Reloading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
+
         // Register an even listener to handle change in the configuration.
         builder.addEventListener(ConfigurationBuilderEvent.RESET, new EventListener<ConfigurationBuilderEvent>() {
             public void onEvent(ConfigurationBuilderEvent event) {
+
                 clearCache();
+
                 LOGGER.log(Level.INFO, "Event:" + event);
                 LOGGER.log(Level.INFO, "Reloading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
 
-                try {
-                    config = builder.getConfiguration();
-                } catch (ConfigurationException conEx) {
-                    LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
-                }
-                config.setExpressionEngine(new XPathExpressionEngine());
-                config.setSchemaValidation(true);
+                getConfig().setExpressionEngine(new XPathExpressionEngine());
+                getConfig().setSchemaValidation(true);
             }
         });
+    }
+
+    private XMLConfiguration getConfig() {
+        XMLConfiguration config = null;
+        // keep trying to get the configuration if the configuration is returned null by the builder
+        // this situation can occur when there are validation issues with the configuration.
+        while (config == null) {
+            try {
+                config = builder.getConfiguration();
+            } catch (ConfigurationException conEx) {
+                clearCache();
+                LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
+                try {
+                    LOGGER.log(Level.SEVERE, "... correct the configuration file and make sure it is validated" +
+                            " against the schema. System will try try in 1 minute.");
+                    TimeUnit.MINUTES.sleep(1);
+                } catch (InterruptedException ex) {
+                    LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }
+        return config;
     }
 
     private void loadCurProvinceCode() {
@@ -127,14 +144,17 @@ public final class CapabilityManager {
      * @return boolean true or false
      */
     public boolean getBoolean(CapabilityKey key) {
-        Boolean enabled = capabilityCache.getBoolean(key);
+        Boolean enabled = null;
+        if (ENABLE_LOCAL_CACHE) {
+            enabled = capabilityCache.getBoolean(key);
+        }
         if (enabled == null) { // capability  is not cached yet.
             boolean groupEnabled = isGroupEnabled(key);
             if (key.isGroup()) {
                 enabled = groupEnabled;
             } else {
                 // both group and key should be true for a capability to be true
-                enabled = groupEnabled && config.getBoolean(getCapabiltyXpath(key));
+                enabled = groupEnabled && getConfig().getBoolean(getCapabiltyXpath(key));
             }
             // add capability value to the cache
             capabilityCache.setBoolean(key, enabled);
@@ -149,9 +169,12 @@ public final class CapabilityManager {
      * @return String a text value of the capability
      */
     public String getString(CapabilityKey key) {
-        String val = capabilityCache.getString(key);
+        String val = null;
+        if (ENABLE_LOCAL_CACHE) {
+            val = capabilityCache.getString(key);
+        }
         if (val == null) {// capability  is not cached yet.
-            val = config.getString(getCapabiltyXpath(key));
+            val = getConfig().getString(getCapabiltyXpath(key));
             // add capability value to the cache
             capabilityCache.setString(key, val);
         }
@@ -165,9 +188,12 @@ public final class CapabilityManager {
      * @return int an int value of the capability
      */
     public int getInt(CapabilityKey key) {
-        Integer val = capabilityCache.getInt(key);
+        Integer val = null;
+        if (ENABLE_LOCAL_CACHE) {
+            val = capabilityCache.getInt(key);
+        }
         if (val == null) {// capability  is not cached yet.
-            val = config.getInt(getCapabiltyXpath(key));
+            val = getConfig().getInt(getCapabiltyXpath(key));
             // add capability value to the cache
             capabilityCache.setInt(key, val);
         }
@@ -181,9 +207,12 @@ public final class CapabilityManager {
      * @return float a float value of the capability
      */
     public float getFloat(CapabilityKey key) {
-        Float val = capabilityCache.getFloat(key);
+        Float val = null;
+        if (ENABLE_LOCAL_CACHE) {
+            val = capabilityCache.getFloat(key);
+        }
         if (val == null) {// capability  is not cached yet.
-            val = config.getFloat(getCapabiltyXpath(key));
+            val = getConfig().getFloat(getCapabiltyXpath(key));
             // add capability value to the cache
             capabilityCache.setFloat(key, val);
         }
@@ -235,7 +264,7 @@ public final class CapabilityManager {
             groupXPath.append(tokens[i]);
             groupXPath.append(CLOSE_BRACKET);
             groupXPath.append(FORWARD_SLASH);
-            if (!config.getBoolean(groupXPath.toString() + ENABLED_TAG + curProvinceCode + CLOSE_BRACKET)) {
+            if (!getConfig().getBoolean(groupXPath.toString() + ENABLED_TAG + curProvinceCode + CLOSE_BRACKET)) {
                 // if any of the groups in hierarchy is disabled, all the sub group will be considered disabled
                 groupEnable = false;
                 break;

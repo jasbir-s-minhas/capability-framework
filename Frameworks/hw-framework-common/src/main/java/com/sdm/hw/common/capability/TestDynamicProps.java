@@ -77,9 +77,9 @@ public class TestDynamicProps {
 
         while (true){
             try {
-                TimeUnit.SECONDS.sleep(5);
-                System.out.println(CapabilityBooleanKey.ALLERGY_STATUS.isEnabled());
-            } catch (InterruptedException ex){
+                TimeUnit.SECONDS.sleep(2);
+                System.out.println(System.currentTimeMillis() + " : " + CapabilityBooleanKey.ALLERGY_STATUS.isEnabled());
+            } catch (Exception ex){
                 ex.printStackTrace();
             }
         }
