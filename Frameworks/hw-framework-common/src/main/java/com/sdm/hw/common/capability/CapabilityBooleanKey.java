@@ -65,6 +65,8 @@ public enum CapabilityBooleanKey implements CapabilityKey {
     COMPREHENSIVE_MODIFIER("eHealth.comprehensiveModifier"),
     //View replaced version status Changes for medical condition
     CONDITION_REPLACED_VERSION("eHealth.conditionReplacedVersion"),
+    //DECN Business entity type value
+    DECN_BUSINESS_ENTITY_TYPE("eHealth.decnBusinessEntityType"),
     //TODO: Add comments.
     DISPLAY_PROVINCIAL_DATA("eHealth.displayProvincialData"),
     //TODO: Add comments.
