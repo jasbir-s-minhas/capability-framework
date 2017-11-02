@@ -7,6 +7,8 @@ public final class ProvinceCodeProvider {
 
     private static final ProvinceCodeProvider provinceCodeProvider = new ProvinceCodeProvider();
 
+    private ProvinceCode provinceCode = ProvinceCode.ONTARIO;
+
     /**
      * Private constructor implementing singleton
      */
@@ -24,6 +26,10 @@ public final class ProvinceCodeProvider {
 
         //TODO: Note for 17.1 team...please implement logic to read current province from
         //TODO: "STORE_PREFERENCE" table and the corresponding provincial code.
-        return ProvinceCode.NOVA_SCOTIA;
+        return provinceCode;
+    }
+
+    void setCurrentProvinceCode(ProvinceCode provinceCode){
+        this.provinceCode = provinceCode;
     }
 }
