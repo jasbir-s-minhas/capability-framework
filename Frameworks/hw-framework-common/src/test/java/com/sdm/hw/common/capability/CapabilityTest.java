@@ -6,42 +6,43 @@ import org.junit.Before;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 abstract public class CapabilityTest {
     private static Logger LOGGER = Logger.getLogger(CapabilityTest.class.getName());
-
-    private StringBuilder stringBuilder = new StringBuilder();
-
-    protected File illFormedCapabilityFile = null;
-    protected File validCapabilityFile = null;
-    protected File duplicateElementCapabilityFile = null;
+    protected File illFormedConfigFile = null;
+    protected File validConfigFileNSallergyStatusTrue = null;
+    protected File validConfigFileNSallergyStatusFalse = null;
+    protected File duplicateElementConfigFile = null;
     protected File capabilityFile = null;
-
     protected CapabilityManager capabilityManager = CapabilityManager.getInstance();
     protected ProvinceCodeProvider provinceCodeProvider = ProvinceCodeProvider.getInstance();
-
+    private StringBuilder stringBuilder = new StringBuilder();
 
     @Before
     public void setUp() throws Exception {
         stringBuilder.append(System.lineSeparator());
         ClassLoader classLoader = getClass().getClassLoader();
-        illFormedCapabilityFile = new File(classLoader.getResource("capability-ill-formed.xml").getFile());
-        validCapabilityFile = new File(classLoader.getResource("capability-valid.xml").getFile());
+        illFormedConfigFile = new File(classLoader.getResource("capability-ill-formed.xml").getFile());
+        validConfigFileNSallergyStatusTrue = new File(classLoader.getResource("capability-valid-NSallergyStatusTrue-.xml").getFile());
+        validConfigFileNSallergyStatusFalse = new File(classLoader.getResource("capability-valid-NSallergyStatusFalse-.xml").getFile());
+        duplicateElementConfigFile = new File(classLoader.getResource("capability-duplicate-element.xml").getFile());
 
-        duplicateElementCapabilityFile = new File(classLoader.getResource("capability-duplicate-element.xml").getFile());
-
-        String parentPath = validCapabilityFile.getParent();
+        String parentPath = validConfigFileNSallergyStatusTrue.getParent();
 
 
         // create capability file in the same directory as other test files
         capabilityFile = new File(parentPath + File.separator + "capability.xml");
 
-        FileUtils.copyFile(validCapabilityFile, capabilityFile);
+        FileUtils.copyFile(validConfigFileNSallergyStatusTrue, capabilityFile);
 
-        LOGGER.info("InvalidCapabilityFile : " + illFormedCapabilityFile.getAbsolutePath());
-        LOGGER.info("ValidCapabilityFile : " + validCapabilityFile.getAbsolutePath());
-        LOGGER.info("Duplicate Element Capability File : " + duplicateElementCapabilityFile.getAbsolutePath());
+        LOGGER.info("InvalidCapabilityFile : " + illFormedConfigFile.getAbsolutePath());
+        LOGGER.info("ValidCapabilityFile : " + validConfigFileNSallergyStatusTrue.getAbsolutePath());
+        LOGGER.info("Duplicate Element Capability File : " + duplicateElementConfigFile.getAbsolutePath());
         LOGGER.info("CapabilityFile : " + capabilityFile.getAbsolutePath());
     }
 
@@ -50,11 +51,46 @@ abstract public class CapabilityTest {
         LOGGER.info(stringBuilder.toString());
     }
 
-    void touchCapabilityFile() throws IOException{
+    void touchCapabilityFile() throws IOException {
         FileUtils.touch(capabilityFile);
     }
 
-    void buildTestOutput(CapabilityKey key, String keyVal){
+    /**
+     * Following is a common method used for copying files
+     *
+     * @param src  Source File
+     * @param dest Destination File
+     * @throws IOException
+     */
+    void copyFile(final File src, final File dest) throws IOException {
+        FileUtils.copyFile(src, dest);
+    }
+
+    /**
+     * Following is a common method used for copying files on with a delay on separate thread
+     *
+     * @param src
+     * @param dest
+     * @param timeUnit
+     * @param delay
+     * @throws IOException
+     */
+    void copyFile(final File src, final File dest, final TimeUnit timeUnit, final int delay) throws IOException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            public void run() {
+                try {
+                    timeUnit.sleep(delay);
+                    copyFile(src, dest);
+                } catch (Exception ex) {
+                    LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        });
+        executorService.shutdown();
+    }
+
+    void buildTestOutput(CapabilityKey key, String keyVal) {
         stringBuilder.append(key.getClass().getSimpleName());
         stringBuilder.append(":");
         stringBuilder.append(key);
