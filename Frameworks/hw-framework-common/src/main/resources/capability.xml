@@ -85,8 +85,8 @@
         </capability>
         <!--DECN Business entity type value-->
         <capability type="boolean" name="decnBusinessEntityType">
-            <value code="NS">BOTH</value>
-            <value code="NB">BOTH</value>
+            <value code="NS">true</value>
+            <value code="NB">true</value>
             <value code="ON">false</value>
         </capability>
         <!--TODO: Add comments.-->
