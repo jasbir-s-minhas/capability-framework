@@ -41,9 +41,7 @@ package com.sdm.hw.common.capability;
 
 public enum CapabilityStringKey implements CapabilityKey {
     // the following enum is for testing multilevel of groups with float capability during development process.
-    TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testStringCapability"),
-    //DECN Business entity type value
-    DECN_BUSINESS_ENTITY_TYPE("eHealth.decnBusinessEntityType");
+    TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testStringCapability");
 
     /**
      * a String representing a path to the capability
