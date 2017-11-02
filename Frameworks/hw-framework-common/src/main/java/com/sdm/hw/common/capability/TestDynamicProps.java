@@ -68,7 +68,7 @@ public class TestDynamicProps {
             cex.printStackTrace();
         }
         PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
-                null, 1, TimeUnit.SECONDS);
+                null, 1, TimeUnit.MINUTES);
         trigger.start();
 
         builder.addEventListener(ConfigurationBuilderEvent.ANY, new EventListener<ConfigurationBuilderEvent>() {
