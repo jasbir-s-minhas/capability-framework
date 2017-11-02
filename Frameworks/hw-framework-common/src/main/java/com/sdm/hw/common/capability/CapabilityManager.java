@@ -1,13 +1,20 @@
 package com.sdm.hw.common.capability;
 
 import org.apache.commons.configuration2.XMLConfiguration;
-import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.ConfigurationBuilderEvent;
+import org.apache.commons.configuration2.builder.ReloadingFileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.event.EventListener;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.*;
+import org.apache.commons.configuration2.reloading.PeriodicReloadingTrigger;
 import org.apache.commons.configuration2.tree.xpath.XPathExpressionEngine;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -35,10 +42,10 @@ public final class CapabilityManager {
 
     static {
         _instance = new CapabilityManager();
-        _instance.init();
+        _instance.initConfig();
     }
 
-    private String currentProvCode;
+    private String curProvinceCode;
     // Loaded XMLConfiguration
     private XMLConfiguration config = null;
     private CapabilityCache capabilityCache = new CapabilityCache();
@@ -53,27 +60,64 @@ public final class CapabilityManager {
         return _instance;
     }
 
-    private void init() {
-        initConfig();
-        config.setExpressionEngine(new XPathExpressionEngine());
-        currentProvCode = ProvinceCodeProvider.getInstance().getCurrentProvinceCode().toString();
+    private void initConfig() {
+        loadCurProvinceCode();
+
+        List<FileLocationStrategy> subs = Arrays.asList(
+                new ProvidedURLLocationStrategy(),
+                new FileSystemLocationStrategy(),
+                new ClasspathLocationStrategy());
+
+        FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
+
+        Parameters params = new Parameters();
+        final ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder =
+                new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
+                        .configure(params.xml()
+                                .setLocationStrategy(strategy)
+                                .setFileName(CAPABILITY_CONFIG_FILE)
+                                // Following will throw an Exception if the XML document does not
+                                // conform to its schema.
+                                .setSchemaValidation(true)
+                                .setExpressionEngine(new XPathExpressionEngine()));
+        try {
+            config = builder.getConfiguration();
+            LOGGER.log(Level.INFO, "Loading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
+        } catch (ConfigurationException conEx) {
+            LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
+        }
+        PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
+                null, 1, TimeUnit.SECONDS);
+        trigger.start();
+
+        // Register an even listener to handle change in the configuration.
+        builder.addEventListener(ConfigurationBuilderEvent.RESET, new EventListener<ConfigurationBuilderEvent>() {
+            public void onEvent(ConfigurationBuilderEvent event) {
+                clearCache();
+                LOGGER.log(Level.INFO, "Event:" + event);
+                LOGGER.log(Level.INFO, "Reloading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
+
+                try {
+                    config = builder.getConfiguration();
+                } catch (ConfigurationException conEx) {
+                    LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
+                }
+                config.setExpressionEngine(new XPathExpressionEngine());
+                config.setSchemaValidation(true);
+            }
+        });
     }
 
-    private void initConfig() {
-        Parameters params = new Parameters();
-        try {
-            FileBasedConfigurationBuilder<XMLConfiguration> builder =
-                    new FileBasedConfigurationBuilder<>(XMLConfiguration.class)
-                            .configure(params.xml()
-                                    .setFileName(CAPABILITY_CONFIG_FILE)
-                                    .setSchemaValidation(true));
-            // This will throw a ConfigurationException if the XML document does not
-            // conform to its schema.
-            config = builder.getConfiguration();
-        } catch (ConfigurationException cex) {
-            // loading of the configuration file failed
-            LOGGER.log(Level.SEVERE, cex.getMessage(), cex);
-        }
+    private void loadCurProvinceCode() {
+        curProvinceCode = ProvinceCodeProvider.getInstance().getCurrentProvinceCode().toString();
+    }
+
+    /**
+     * This method clears cache
+     */
+    public void clearCache() {
+        loadCurProvinceCode();
+        capabilityCache.cleanCache();
     }
 
     /**
@@ -172,7 +216,7 @@ public final class CapabilityManager {
         capabilityXPath.append(CLOSE_BRACKET);
         capabilityXPath.append(FORWARD_SLASH);
         capabilityXPath.append(VALUE_TAG);
-        capabilityXPath.append(currentProvCode);
+        capabilityXPath.append(curProvinceCode);
         capabilityXPath.append(CLOSE_BRACKET);
         return capabilityXPath.toString();
     }
@@ -191,7 +235,7 @@ public final class CapabilityManager {
             groupXPath.append(tokens[i]);
             groupXPath.append(CLOSE_BRACKET);
             groupXPath.append(FORWARD_SLASH);
-            if (!config.getBoolean(groupXPath.toString() + ENABLED_TAG + currentProvCode + CLOSE_BRACKET)) {
+            if (!config.getBoolean(groupXPath.toString() + ENABLED_TAG + curProvinceCode + CLOSE_BRACKET)) {
                 // if any of the groups in hierarchy is disabled, all the sub group will be considered disabled
                 groupEnable = false;
                 break;
@@ -239,5 +283,10 @@ public final class CapabilityManager {
         private void setFloat(CapabilityKey key, Float val) {
             cacheMap.put(key, val);
         }
+
+        private void cleanCache() {
+            cacheMap.clear();
+        }
+
     }
 }
