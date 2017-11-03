@@ -25,21 +25,31 @@ public class CapabilityManagerTest extends CapabilityTest {
     public void testBoolean() throws Exception {
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
-        capabilityManager.clearCache();
+        capabilityManager.reset();
         assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NEW_BRUNSWICK);
-        capabilityManager.clearCache();
+        capabilityManager.reset();
         assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.ONTARIO);
-        capabilityManager.clearCache();
+        capabilityManager.reset();
         assertEquals(false, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
     }
 
-    //    @Test (expected = ConfigurationException.class)
     @Test
-    public void testConfigIllFormedness() throws Exception {
+    public void testIllFormednessConfigDuringExec() throws Exception {
+
+        provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
+        // Following line copies an ill-Formed config file into config file. This will cause a ConfigurationException
+        // and put the framework in a loop util the configuration is fixed.
+        copyFile(illFormedConfigFile, capabilityFile);
+        // Following line copies a valid file into config file in a separate thread which will break the above loop.
+        copyFile(validConfigFileNSallergyStatusTrue, capabilityFile, TimeUnit.SECONDS, 10);
+        assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+    }
+    @Test
+    public void testIllFormednessConfigAtStart() throws Exception {
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
         // Following line copies an ill-Formed config file into config file. This will cause a ConfigurationException

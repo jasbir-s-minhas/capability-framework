@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  */
 public final class CapabilityManager {
     // Singleton Class initialization
-    private static final CapabilityManager _instance;
+    private static volatile CapabilityManager _instance = null;
     private static final String CAPABILITY_CONFIG_FILE = "capability.xml";
     // Following tokens are used for building XPath for a capability.
     private static final String XPATH_PREFIX = "capabilityGroup[@name='";
@@ -47,8 +47,6 @@ public final class CapabilityManager {
     }
 
     private String curProvinceCode;
-    // Loaded XMLConfiguration
-//    private XMLConfiguration config = null;
     private ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder = null;
     private CapabilityCache capabilityCache = new CapabilityCache();
 
@@ -58,7 +56,10 @@ public final class CapabilityManager {
     private CapabilityManager() {
     }
 
-    public static CapabilityManager getInstance() {
+    public static synchronized CapabilityManager getInstance() {
+        if (_instance == null){
+            _instance = new CapabilityManager();
+        }
         return _instance;
     }
 
@@ -92,7 +93,7 @@ public final class CapabilityManager {
         builder.addEventListener(ConfigurationBuilderEvent.RESET, new EventListener<ConfigurationBuilderEvent>() {
             public void onEvent(ConfigurationBuilderEvent event) {
 
-                clearCache();
+                ;
 
                 LOGGER.log(Level.INFO, "Event:" + event);
                 LOGGER.log(Level.INFO, "Reloading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
@@ -111,7 +112,7 @@ public final class CapabilityManager {
             try {
                 config = builder.getConfiguration();
             } catch (ConfigurationException conEx) {
-                clearCache();
+                reset();
                 LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
                 try {
                     LOGGER.log(Level.SEVERE, "... correct the configuration file and make sure it is validated" +
@@ -130,7 +131,14 @@ public final class CapabilityManager {
     }
 
     /**
-     * This method clears cache
+     * This method resets CapabilityManager singleton instance
+     */
+    public synchronized void reset() {
+        _instance = null;
+    }
+
+    /**
+     * This method clears cachce only
      */
     public void clearCache() {
         loadCurProvinceCode();
