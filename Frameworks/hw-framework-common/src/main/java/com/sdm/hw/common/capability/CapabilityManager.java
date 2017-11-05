@@ -189,20 +189,20 @@ public final class CapabilityManager {
     }
 
     /**
-     * This method is used to return a int value of a Capability
+     * This method is used to return a long value of a Capability
      *
      * @param key an enum of CapabilityKey type
-     * @return int an int value of the capability
+     * @return long an long value of the capability
      */
-    public int getInt(CapabilityKey key) {
-        Integer val = null;
+    public long getLong(CapabilityKey key) {
+        Long val = null;
         if (ENABLE_LOCAL_CACHE) {
-            val = capabilityCache.getInt(key);
+            val = capabilityCache.getLong(key);
         }
         if (val == null) {// capability  is not cached yet.
-            val = getConfig().getInt(getCapabiltyXpath(key));
+            val = getConfig().getLong(getCapabiltyXpath(key));
             // add capability value to the cache
-            capabilityCache.setInt(key, val);
+            capabilityCache.setLong(key, val);
         }
         return val;
     }
@@ -304,11 +304,11 @@ public final class CapabilityManager {
             cacheMap.put(key, val);
         }
 
-        private Integer getInt(CapabilityKey key) {
-            return (Integer) cacheMap.get(key);
+        private Long getLong(CapabilityKey key) {
+            return (Long) cacheMap.get(key);
         }
 
-        private void setInt(CapabilityKey key, Integer val) {
+        private void setLong(CapabilityKey key, Long val) {
             cacheMap.put(key, val);
         }
 

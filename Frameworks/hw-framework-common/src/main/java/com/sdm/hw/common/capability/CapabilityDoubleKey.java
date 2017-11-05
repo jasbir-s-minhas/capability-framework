@@ -21,8 +21,8 @@ package com.sdm.hw.common.capability;
  *      			<value type="boolean">true</value>
  *      		</capability>
  *      		<capability>
- *      			<name>testIntCapability</name>
- *      			<value type="int">999</value>
+ *      			<name>testLongCapability</name>
+ *      			<value type="long">999</value>
  *      		</capability>
  *      		<capability>
  *      			<name>testDoubleCapability</name>
@@ -68,7 +68,7 @@ public enum CapabilityDoubleKey implements CapabilityKey {
     }
 
     /**
-     * This method returns the capability int value based on the key of current enum instance
+     * This method returns the capability long value based on the key of current enum instance
      *
      * @return capability string
      */

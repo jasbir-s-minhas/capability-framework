@@ -57,15 +57,15 @@ public class CapabilityManagerTest extends CapabilityTest {
     public void testInt() throws Exception {
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
         capabilityManager.clearCache();
-        assertEquals(100, capabilityManager.getInt(CapabilityIntKey.TEST_2_LEVEL_GROUP));
+        assertEquals(100, capabilityManager.getLong(CapabilityLongKey.TEST_2_LEVEL_GROUP));
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NEW_BRUNSWICK);
         capabilityManager.clearCache();
-        assertEquals(200, capabilityManager.getInt(CapabilityIntKey.TEST_2_LEVEL_GROUP));
+        assertEquals(200, capabilityManager.getLong(CapabilityLongKey.TEST_2_LEVEL_GROUP));
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.ONTARIO);
         capabilityManager.clearCache();
-        assertEquals(999, capabilityManager.getInt(CapabilityIntKey.TEST_2_LEVEL_GROUP));
+        assertEquals(999, capabilityManager.getLong(CapabilityLongKey.TEST_2_LEVEL_GROUP));
     }
 
     @Test
@@ -83,15 +83,15 @@ public class CapabilityManagerTest extends CapabilityTest {
         assertEquals(10.9, capabilityManager.getDouble(CapabilityDoubleKey.TEST_2_LEVEL_GROUP), 0.0);
     }
 
-    @Test
-    public void testIllFormednessConfigAtStart() throws Exception {
-        badConfigAtStartExecTestHelper(illFormedConfigFile);
-    }
-
-    @Test
-    public void testInvalidConfigAtStart() throws Exception {
-        badConfigAtStartExecTestHelper(illFormedConfigFile);
-    }
+//    @Test
+//    public void testIllFormednessConfigAtStart() throws Exception {
+//        badConfigAtStartExecTestHelper(illFormedConfigFile);
+//    }
+//
+//    @Test
+//    public void testInvalidConfigAtStart() throws Exception {
+//        badConfigAtStartExecTestHelper(illFormedConfigFile);
+//    }
 
     private void badConfigAtStartExecTestHelper(File badConfig) throws Exception{
         // Following line copies an bad config file into config file. This will cause a ConfigurationException

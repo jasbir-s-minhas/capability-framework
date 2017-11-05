@@ -21,8 +21,8 @@ package com.sdm.hw.common.capability;
  *      			<value type="boolean">true</value>
  *      		</capability>
  *      		<capability>
- *      			<name>testIntCapability</name>
- *      			<value type="int">999</value>
+ *      			<name>testLongCapability</name>
+ *      			<value type="long">999</value>
  *      		</capability>
  *      		<capability>
  *      			<name>testDoubleCapability</name>

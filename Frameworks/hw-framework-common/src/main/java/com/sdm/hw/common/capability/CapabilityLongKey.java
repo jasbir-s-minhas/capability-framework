@@ -2,7 +2,7 @@ package com.sdm.hw.common.capability;
 
 /**
  * This enum works with cCapabilityManager class. Following steps should be performed to add a new
- * int capability:
+ * long capability:
  * <pre>
  *  Step 1. Create a new Enum and corresponding to a string in the format of capabilityGroup[.capabiityGroup].capbility
  *  	e.g.: testGroup1L1.testGroup1L2.testBooleanCapability
@@ -21,8 +21,8 @@ package com.sdm.hw.common.capability;
  *      			<value type="boolean">true</value>
  *      		</capability>
  *      		<capability>
- *      			<name>testIntCapability</name>
- *      			<value type="int">999</value>
+ *      			<name>testLongCapability</name>
+ *      			<value type="long">999</value>
  *      		</capability>
  *      		<capability>
  *      			<name>testDoubleCapability</name>
@@ -38,10 +38,10 @@ package com.sdm.hw.common.capability;
  * @since 2017-10-10
  */
 
-public enum CapabilityIntKey implements CapabilityKey {
+public enum CapabilityLongKey implements CapabilityKey {
 
     // the following enum is for testing multilevel of groups with double capability during development process.
-    TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testIntCapability");
+    TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testLongCapability");
 
     /**
      * a String representing a path to the capability
@@ -56,7 +56,7 @@ public enum CapabilityIntKey implements CapabilityKey {
      *
      * @param capabilityPath String representing the capability path.
      */
-    CapabilityIntKey(final String capabilityPath) {
+    CapabilityLongKey(final String capabilityPath) {
         this.capabilityPath = capabilityPath;
     }
 
@@ -69,12 +69,12 @@ public enum CapabilityIntKey implements CapabilityKey {
     }
 
     /**
-     * This method returns the capability int value based on the key of current enum instance
+     * This method returns the capability long value based on the key of current enum instance
      *
      * @return capability string
      */
-    public int getInt() {
-        return CapabilityManager.getInstance().getInt(this);
+    public long getLong() {
+        return CapabilityManager.getInstance().getLong(this);
     }
 
     /**

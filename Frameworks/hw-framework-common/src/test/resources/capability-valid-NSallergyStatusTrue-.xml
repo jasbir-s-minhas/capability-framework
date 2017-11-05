@@ -12,7 +12,7 @@
             <capability name="testStringCapability" type="string">
                 <value code="NS">NS-String</value>
                 <value code="NB">NB-String</value>
-                <value code="ON">On-String</value>
+                <value code="ON">ON-String</value>
                 <value code="NB">Test</value>
             </capability>
             <capability name="testBooleanCapability" type="boolean">
@@ -20,7 +20,7 @@
                 <value code="NB">false</value>
                 <value code="ON">true</value>
             </capability>
-            <capability name="testIntCapability" type="int">
+            <capability name="testLongCapability" type="long">
                 <value code="NS">100</value>
                 <value code="NB">200</value>
                 <value code="ON">999</value>

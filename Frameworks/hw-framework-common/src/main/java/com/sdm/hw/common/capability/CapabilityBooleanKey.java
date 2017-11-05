@@ -26,7 +26,7 @@ package com.sdm.hw.common.capability;
  *                  <value code="NB"/>
  *                  <value code="ON">true</value>
  *              </capability>
- *              <capability name="testIntCapability" type="int">
+ *              <capability name="testLongCapability" type="long">
  *                  <value code="NS"/>
  *                  <value code="NB"/>
  *                  <value code="ON">999</value>

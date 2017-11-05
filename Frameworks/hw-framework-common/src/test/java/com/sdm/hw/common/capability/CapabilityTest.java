@@ -75,7 +75,7 @@ abstract public class CapabilityTest {
      * @param delay
      * @throws IOException
      */
-    protected void copyFile(final File src, final File dest, final TimeUnit timeUnit, final int delay) throws IOException {
+    protected void copyFile(final File src, final File dest, final TimeUnit timeUnit, final long delay) throws IOException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
             public void run() {
@@ -96,7 +96,7 @@ abstract public class CapabilityTest {
      * @param delay
      */
 
-    protected void sleep(final TimeUnit timeUnit, final int delay){
+    protected void sleep(final TimeUnit timeUnit, final long delay){
         try {
             timeUnit.sleep(delay);
         } catch (InterruptedException ex) {
