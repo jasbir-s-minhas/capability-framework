@@ -34,14 +34,14 @@ abstract public class CapabilityTest {
 
         String parentPath = validConfigFileNSallergyStatusTrue.getParent();
 
-
         // create capability file in the same directory as other test files
         capabilityFile = new File(parentPath + File.separator + "capability.xml");
 
         FileUtils.copyFile(validConfigFileNSallergyStatusTrue, capabilityFile);
 
         LOGGER.info("InvalidCapabilityFile : " + illFormedConfigFile.getAbsolutePath());
-        LOGGER.info("ValidCapabilityFile : " + validConfigFileNSallergyStatusTrue.getAbsolutePath());
+        LOGGER.info("Valid Config File NS allergy Status True : " + validConfigFileNSallergyStatusTrue.getAbsolutePath());
+        LOGGER.info("Valid Config File NS allergy Status False : " + validConfigFileNSallergyStatusFalse.getAbsolutePath());
         LOGGER.info("Duplicate Element Capability File : " + duplicateElementConfigFile.getAbsolutePath());
         LOGGER.info("CapabilityFile : " + capabilityFile.getAbsolutePath());
     }
@@ -62,7 +62,7 @@ abstract public class CapabilityTest {
      * @param dest Destination File
      * @throws IOException
      */
-    void copyFile(final File src, final File dest) throws IOException {
+    protected void copyFile(final File src, final File dest) throws IOException {
         FileUtils.copyFile(src, dest);
     }
 
@@ -75,12 +75,12 @@ abstract public class CapabilityTest {
      * @param delay
      * @throws IOException
      */
-    void copyFile(final File src, final File dest, final TimeUnit timeUnit, final int delay) throws IOException {
+    protected void copyFile(final File src, final File dest, final TimeUnit timeUnit, final int delay) throws IOException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
             public void run() {
                 try {
-                    timeUnit.sleep(delay);
+                    sleep(timeUnit, delay);
                     copyFile(src, dest);
                 } catch (Exception ex) {
                     LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
@@ -90,7 +90,21 @@ abstract public class CapabilityTest {
         executorService.shutdown();
     }
 
-    void buildTestOutput(CapabilityKey key, String keyVal) {
+    /**
+     *
+     * @param timeUnit
+     * @param delay
+     */
+
+    protected void sleep(final TimeUnit timeUnit, final int delay){
+        try {
+            timeUnit.sleep(delay);
+        } catch (InterruptedException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    protected void buildTestOutput(CapabilityKey key, String keyVal) {
         stringBuilder.append(key.getClass().getSimpleName());
         stringBuilder.append(":");
         stringBuilder.append(key);

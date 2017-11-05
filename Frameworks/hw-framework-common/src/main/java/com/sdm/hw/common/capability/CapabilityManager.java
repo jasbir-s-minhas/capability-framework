@@ -39,13 +39,7 @@ public final class CapabilityManager {
     private static final String CAPABILITY_NAME_TAG = "capability[@name='";
     private static final String VALUE_TAG = "value[@code='";
     private static final Logger LOGGER = Logger.getLogger(CapabilityManager.class.getName());
-    private static final boolean ENABLE_LOCAL_CACHE = false;
-
-    static {
-        _instance = new CapabilityManager();
-        _instance.initConfig();
-    }
-
+    private static final boolean ENABLE_LOCAL_CACHE = true;
     private String curProvinceCode;
     private ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder = null;
     private CapabilityCache capabilityCache = new CapabilityCache();
@@ -54,6 +48,7 @@ public final class CapabilityManager {
      * Private constructor for singleton
      */
     private CapabilityManager() {
+        initConfig();
     }
 
     public static synchronized CapabilityManager getInstance() {
@@ -92,9 +87,6 @@ public final class CapabilityManager {
         // Register an even listener to handle change in the configuration.
         builder.addEventListener(ConfigurationBuilderEvent.RESET, new EventListener<ConfigurationBuilderEvent>() {
             public void onEvent(ConfigurationBuilderEvent event) {
-
-                ;
-
                 LOGGER.log(Level.INFO, "Event:" + event);
                 LOGGER.log(Level.INFO, "Reloading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
 
@@ -112,14 +104,20 @@ public final class CapabilityManager {
             try {
                 config = builder.getConfiguration();
             } catch (ConfigurationException conEx) {
-                reset();
                 LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
-                try {
+                clearCache();
+            } catch (NullPointerException nEx){
+                LOGGER.log(Level.SEVERE, nEx.getMessage(), nEx);
+                reset();
+            } finally {
+                if (config == null){
                     LOGGER.log(Level.SEVERE, "... correct the configuration file and make sure it is validated" +
-                            " against the schema. System will try try in 1 minute.");
-                    TimeUnit.MINUTES.sleep(1);
-                } catch (InterruptedException ex) {
-                    LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                            " against the schema. System will retry in 15 seconds.");
+                    try {
+                        TimeUnit.SECONDS.sleep(15);
+                    } catch (InterruptedException ex) {
+                        LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
                 }
             }
         }
@@ -133,8 +131,9 @@ public final class CapabilityManager {
     /**
      * This method resets CapabilityManager singleton instance
      */
-    public synchronized void reset() {
+    public static synchronized void reset() {
         _instance = null;
+        _instance = getInstance();
     }
 
     /**
