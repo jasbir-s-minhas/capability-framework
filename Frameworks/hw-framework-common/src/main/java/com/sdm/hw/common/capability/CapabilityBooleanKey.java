@@ -31,7 +31,7 @@ package com.sdm.hw.common.capability;
  *                  <value code="NB"/>
  *                  <value code="ON">999</value>
  *              </capability>
- *              <capability name="testFloatCapability" type="boolean">
+ *              <capability name="testDoubleCapability" type="boolean">
  *                  <value code="NS"/>
  *                  <value code="NB"/>
  *                  <value code="ON">10.9</value>

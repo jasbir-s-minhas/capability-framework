@@ -25,7 +25,7 @@
                 <value code="NB">200</value>
                 <value code="ON">999</value>
             </capability>
-            <capability name="testFloatCapability" type="boolean">
+            <capability name="testDoubleCapability" type="boolean">
                 <value code="NS">1.5</value>
                 <value code="NB">2.5</value>
                 <value code="ON">10.9</value>

@@ -208,20 +208,20 @@ public final class CapabilityManager {
     }
 
     /**
-     * This method is used to return a float value of a Capability
+     * This method is used to return a double value of a Capability
      *
      * @param key an enum of CapabilityKey type
-     * @return float a float value of the capability
+     * @return double a double value of the capability
      */
-    public float getFloat(CapabilityKey key) {
-        Float val = null;
+    public double getDouble(CapabilityKey key) {
+        Double val = null;
         if (ENABLE_LOCAL_CACHE) {
-            val = capabilityCache.getFloat(key);
+            val = capabilityCache.getDouble(key);
         }
         if (val == null) {// capability  is not cached yet.
-            val = getConfig().getFloat(getCapabiltyXpath(key));
+            val = getConfig().getDouble(getCapabiltyXpath(key));
             // add capability value to the cache
-            capabilityCache.setFloat(key, val);
+            capabilityCache.setDouble(key, val);
         }
         return val;
     }
@@ -312,11 +312,11 @@ public final class CapabilityManager {
             cacheMap.put(key, val);
         }
 
-        private Float getFloat(CapabilityKey key) {
-            return (Float) cacheMap.get(key);
+        private Double getDouble(CapabilityKey key) {
+            return (Double) cacheMap.get(key);
         }
 
-        private void setFloat(CapabilityKey key, Float val) {
+        private void setDouble(CapabilityKey key, Double val) {
             cacheMap.put(key, val);
         }
 

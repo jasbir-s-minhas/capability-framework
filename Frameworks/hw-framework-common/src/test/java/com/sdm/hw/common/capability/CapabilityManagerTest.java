@@ -69,18 +69,18 @@ public class CapabilityManagerTest extends CapabilityTest {
     }
 
     @Test
-    public void testFloat() throws Exception {
+    public void testDouble() throws Exception {
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
         capabilityManager.clearCache();
-        assertEquals(1.5, capabilityManager.getFloat(CapabilityFloatKey.TEST_2_LEVEL_GROUP, 0.01));
+        assertEquals(1.5, capabilityManager.getDouble(CapabilityDoubleKey.TEST_2_LEVEL_GROUP), 0.0);
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NEW_BRUNSWICK);
         capabilityManager.clearCache();
-        assertEquals(2.5, capabilityManager.getFloat(CapabilityFloatKey.TEST_2_LEVEL_GROUP));
+        assertEquals(2.5, capabilityManager.getDouble(CapabilityDoubleKey.TEST_2_LEVEL_GROUP), 0.0);
 
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.ONTARIO);
         capabilityManager.clearCache();
-        assertEquals(10.9, capabilityManager.getFloat(CapabilityFloatKey.TEST_2_LEVEL_GROUP));
+        assertEquals(10.9, capabilityManager.getDouble(CapabilityDoubleKey.TEST_2_LEVEL_GROUP), 0.0);
     }
 
     @Test

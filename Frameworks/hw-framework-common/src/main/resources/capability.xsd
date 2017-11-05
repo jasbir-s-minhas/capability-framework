@@ -64,7 +64,7 @@
         <xs:restriction base="xs:token">
             <xs:enumeration value="boolean"/>
             <xs:enumeration value="string"/>
-            <xs:enumeration value="float"/>
+            <xs:enumeration value="double"/>
             <xs:enumeration value="int"/>
         </xs:restriction>
     </xs:simpleType>
@@ -75,7 +75,7 @@
 			<xs:extension base="xs:token">
 				<xs:attribute name="type" type="xs:token" use="required"/>
 				<!--<xs:assert test="if (@type='boolean')  then . castable as xs:boolean-->
-                        <!--else if (@type='float')     then . castable as xs:float-->
+                        <!--else if (@type='double')     then . castable as xs:double-->
                         <!--else if (@type='int')       then . castable as xs:int-->
                         <!--else if (@type='string')    then . castable as xs:token-->
                         <!--else false()"/>-->

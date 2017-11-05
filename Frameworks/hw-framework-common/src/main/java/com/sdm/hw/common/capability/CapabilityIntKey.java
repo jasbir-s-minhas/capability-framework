@@ -25,8 +25,8 @@ package com.sdm.hw.common.capability;
  *      			<value type="int">999</value>
  *      		</capability>
  *      		<capability>
- *      			<name>testFloatCapability</name>
- *      			<value type="float">10.9</value>
+ *      			<name>testDoubleCapability</name>
+ *      			<value type="double">10.9</value>
  *      		</capability>\
  *      	</capabilityGroup>
  *      </capabilityGroup>
@@ -40,7 +40,7 @@ package com.sdm.hw.common.capability;
 
 public enum CapabilityIntKey implements CapabilityKey {
 
-    // the following enum is for testing multilevel of groups with float capability during development process.
+    // the following enum is for testing multilevel of groups with double capability during development process.
     TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testIntCapability");
 
     /**

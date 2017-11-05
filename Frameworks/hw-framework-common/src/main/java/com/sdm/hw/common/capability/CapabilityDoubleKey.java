@@ -2,7 +2,7 @@ package com.sdm.hw.common.capability;
 
 /**
  * This enum works with CapabilityManager class. Following steps should be performed to add a new
- * float capability:
+ * double capability:
  * <pre>
  *  Step 1. Create a new Enum and corresponding to a string in the format of capabilityGroup[.capabiityGroup].capbility
  *  	e.g.: testGroup1L1.testGroup1L2.testBooleanCapability
@@ -25,8 +25,8 @@ package com.sdm.hw.common.capability;
  *      			<value type="int">999</value>
  *      		</capability>
  *      		<capability>
- *      			<name>testFloatCapability</name>
- *      			<value type="float">10.9</value>
+ *      			<name>testDoubleCapability</name>
+ *      			<value type="double">10.9</value>
  *      		</capability>\
  *      	</capabilityGroup>
  *      </capabilityGroup>
@@ -38,9 +38,9 @@ package com.sdm.hw.common.capability;
  * @since 2017-10-10
  */
 
-public enum CapabilityFloatKey implements CapabilityKey {
-    // the following enum is for testing multilevel of groups with float capability during development process.
-    TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testFloatCapability");
+public enum CapabilityDoubleKey implements CapabilityKey {
+    // the following enum is for testing multilevel of groups with double capability during development process.
+    TEST_2_LEVEL_GROUP("testGroup1L1.testGroup1L2.testDoubleCapability");
 
     /**
      * a string representing a path to the capability
@@ -55,7 +55,7 @@ public enum CapabilityFloatKey implements CapabilityKey {
      *
      * @param capabilityPath String representing the capability path.
      */
-    CapabilityFloatKey(final String capabilityPath) {
+    CapabilityDoubleKey(final String capabilityPath) {
         this.capabilityPath = capabilityPath;
     }
 
@@ -72,8 +72,8 @@ public enum CapabilityFloatKey implements CapabilityKey {
      *
      * @return capability string
      */
-    public float getFloat() {
-        return CapabilityManager.getInstance().getFloat(this);
+    public double getDouble() {
+        return CapabilityManager.getInstance().getDouble(this);
     }
 
     /**
