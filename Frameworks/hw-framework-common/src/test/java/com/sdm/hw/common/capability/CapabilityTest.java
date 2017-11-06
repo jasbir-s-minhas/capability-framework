@@ -2,7 +2,9 @@ package com.sdm.hw.common.capability;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,41 +16,53 @@ import java.util.logging.Logger;
 
 abstract public class CapabilityTest {
     private static Logger LOGGER = Logger.getLogger(CapabilityTest.class.getName());
-    protected File illFormedConfigFile = null;
-    protected File validConfigFileNSallergyStatusTrue = null;
-    protected File validConfigFileNSallergyStatusFalse = null;
-    protected File duplicateElementConfigFile = null;
-    protected File capabilityFile = null;
-    protected CapabilityManager capabilityManager = CapabilityManager.getInstance();
-    protected ProvinceCodeProvider provinceCodeProvider = ProvinceCodeProvider.getInstance();
-    private StringBuilder stringBuilder = new StringBuilder();
+    protected static File illFormedConfig = null;
+    protected static File validConfig = null;
+    protected static File invalidConfig = null;
+    protected static File capabilityFile = null;
+    protected static CapabilityManager capabilityManager = CapabilityManager.getInstance();
+    protected static ProvinceCodeProvider provinceCodeProvider = ProvinceCodeProvider.getInstance();
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(System.lineSeparator());
-        ClassLoader classLoader = getClass().getClassLoader();
-        illFormedConfigFile = new File(classLoader.getResource("capability-ill-formed.xml").getFile());
-        validConfigFileNSallergyStatusTrue = new File(classLoader.getResource("capability-valid-NSallergyStatusTrue-.xml").getFile());
-        validConfigFileNSallergyStatusFalse = new File(classLoader.getResource("capability-valid-NSallergyStatusFalse-.xml").getFile());
-        duplicateElementConfigFile = new File(classLoader.getResource("capability-duplicate-element.xml").getFile());
+        ClassLoader classLoader = CapabilityTest.class.getClassLoader();
+        validConfig = new File(classLoader.getResource("capability-valid.xml").getFile());
+        illFormedConfig = new File(classLoader.getResource("capability-illformed.xml").getFile());
+        invalidConfig = new File(classLoader.getResource("capability-invalid.xml").getFile());
 
-        String parentPath = validConfigFileNSallergyStatusTrue.getParent();
+        String parentPath = validConfig.getParent();
 
         // create capability file in the same directory as other test files
         capabilityFile = new File(parentPath + File.separator + "capability.xml");
 
-        FileUtils.copyFile(validConfigFileNSallergyStatusTrue, capabilityFile);
+        stringBuilder.append("InvalidCapabilityFile                     : "
+                + illFormedConfig.getAbsolutePath() + System.lineSeparator());
+        stringBuilder.append("Valid Config File NS allergy Status True  : "
+                + validConfig.getAbsolutePath() + System.lineSeparator());
+        stringBuilder.append("Duplicate Element Capability File         : "
+                + invalidConfig.getAbsolutePath() + System.lineSeparator());
+        stringBuilder.append("CapabilityFile                            : "
+                + capabilityFile.getAbsolutePath() + System.lineSeparator());
 
-        LOGGER.info("InvalidCapabilityFile : " + illFormedConfigFile.getAbsolutePath());
-        LOGGER.info("Valid Config File NS allergy Status True : " + validConfigFileNSallergyStatusTrue.getAbsolutePath());
-        LOGGER.info("Valid Config File NS allergy Status False : " + validConfigFileNSallergyStatusFalse.getAbsolutePath());
-        LOGGER.info("Duplicate Element Capability File : " + duplicateElementConfigFile.getAbsolutePath());
-        LOGGER.info("CapabilityFile : " + capabilityFile.getAbsolutePath());
+        LOGGER.info(stringBuilder.toString());
+    }
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception{
+
+    }
+
+    @Before
+    public void setUp() throws Exception{
+        capabilityManager.clearCache();
+        provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
+        copyFile(validConfig, capabilityFile);
+        // wait enough time so that above change in config is picked-up by the framework
     }
 
     @After
     public void tearDown() throws Exception {
-        LOGGER.info(stringBuilder.toString());
     }
 
     void touchCapabilityFile() throws IOException {
@@ -63,6 +77,9 @@ abstract public class CapabilityTest {
      * @throws IOException
      */
     protected void copyFile(final File src, final File dest) throws IOException {
+//        LOGGER.log(Level.INFO, "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//        LOGGER.log(Level.INFO, "Copying " + src.getAbsolutePath() + "...to..." + dest.getAbsolutePath() );
+//        LOGGER.log(Level.INFO, "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         FileUtils.copyFile(src, dest);
     }
 
@@ -105,11 +122,11 @@ abstract public class CapabilityTest {
     }
 
     protected void buildTestOutput(CapabilityKey key, String keyVal) {
-        stringBuilder.append(key.getClass().getSimpleName());
-        stringBuilder.append(":");
-        stringBuilder.append(key);
-        stringBuilder.append("->");
-        stringBuilder.append(keyVal);
-        stringBuilder.append(System.lineSeparator());
+        StringBuilder sb = new StringBuilder();
+        sb.append(key.getClass().getSimpleName());
+        sb.append(":");
+        sb.append(key);
+        sb.append(keyVal);
+        sb.append(System.lineSeparator());
     }
 }

@@ -83,54 +83,51 @@ public class CapabilityManagerTest extends CapabilityTest {
         assertEquals(10.9, capabilityManager.getDouble(CapabilityDoubleKey.TEST_2_LEVEL_GROUP), 0.0);
     }
 
-//    @Test
-//    public void testIllFormednessConfigAtStart() throws Exception {
-//        badConfigAtStartExecTestHelper(illFormedConfigFile);
-//    }
-//
-//    @Test
-//    public void testInvalidConfigAtStart() throws Exception {
-//        badConfigAtStartExecTestHelper(illFormedConfigFile);
-//    }
+    @Test
+    public void testIllFormednessConfigAtStart() throws Exception {
+        badConfigAtStartExecTestHelper(illFormedConfig);
+    }
 
-    private void badConfigAtStartExecTestHelper(File badConfig) throws Exception{
+    @Test
+    public void testInvalidConfigAtStart() throws Exception {
+        badConfigAtStartExecTestHelper(invalidConfig);
+    }
+
+    private void badConfigAtStartExecTestHelper(File badConfig) throws Exception {
         // Following line copies an bad config file into config file. This will cause a ConfigurationException
         // and put the framework in a loop util the configuration is fixed.
         copyFile(badConfig, capabilityFile);
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
         // Reset the capability manager to simulate a behaviour which would be similar at the starting of the System.
         CapabilityManager.reset();
-        CapabilityManager capabilityManager = CapabilityManager.getInstance();
+        capabilityManager = CapabilityManager.getInstance();
         // Following line copies a valid file into config file in a separate thread which will break the above loop.
-        copyFile(validConfigFileNSallergyStatusTrue, capabilityFile, TimeUnit.SECONDS, 10);
+        copyFile(validConfig, capabilityFile, TimeUnit.SECONDS, 25);
         assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
     }
-    
+
     @Test
     public void testIllFormedConfigMidExec() throws IOException {
-        badConfigMidExecTestHelper(illFormedConfigFile);
+        badConfigMidExecTestHelper(illFormedConfig);
     }
 
     @Test
     public void testInvalidConfigMidExec() throws IOException {
-        badConfigMidExecTestHelper(duplicateElementConfigFile);
+        badConfigMidExecTestHelper(invalidConfig);
     }
 
     /**
      * Helper function to test IllFormed Configuraiton scenarios
      */
-    private void badConfigMidExecTestHelper(File badConfig) throws IOException{
-        provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
-        CapabilityManager.reset();
-        CapabilityManager capabilityManager = CapabilityManager.getInstance();
+    private void badConfigMidExecTestHelper(File badConfig) throws IOException {
         assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
         // Following line copies an ill-Formed config file into config file. This will cause a ConfigurationException
         // and put the framework in a loop util the configuration is fixed.
         copyFile(badConfig, capabilityFile);
         // Sleep for 30 seconds to let the system load ill-formed configuration file before processing it.
-        sleep(TimeUnit.SECONDS, 10);
+        sleep(TimeUnit.SECONDS, 17);
         // Following line copies a valid file into config file in a separate thread which will break the above loop.
-        copyFile(validConfigFileNSallergyStatusTrue, capabilityFile, TimeUnit.SECONDS, 10);
+        copyFile(validConfig, capabilityFile, TimeUnit.SECONDS, 32);
         assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
     }
 }

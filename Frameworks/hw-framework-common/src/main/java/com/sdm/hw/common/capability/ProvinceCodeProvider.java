@@ -7,7 +7,7 @@ public final class ProvinceCodeProvider {
 
     private static final ProvinceCodeProvider provinceCodeProvider = new ProvinceCodeProvider();
 
-    private ProvinceCode provinceCode = ProvinceCode.ONTARIO;
+    private ProvinceCode provinceCode = ProvinceCode.NOVA_SCOTIA;
 
     /**
      * Private constructor implementing singleton
