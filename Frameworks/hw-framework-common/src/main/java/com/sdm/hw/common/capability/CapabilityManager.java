@@ -1,5 +1,6 @@
 package com.sdm.hw.common.capability;
 
+import com.sdm.hw.logging.services.LogManager;
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.configuration2.builder.ConfigurationBuilderEvent;
 import org.apache.commons.configuration2.builder.ReloadingFileBasedConfigurationBuilder;
@@ -54,7 +55,7 @@ public final class CapabilityManager {
     }
 
     public static synchronized CapabilityManager getInstance() {
-        if (_instance == null){
+        if (_instance == null) {
             _instance = new CapabilityManager();
         }
         return _instance;
@@ -63,12 +64,12 @@ public final class CapabilityManager {
     private void initConfig() {
         loadCurProvinceCode();
 
-//        List<FileLocationStrategy> subs = Arrays.asList(
-//                new ProvidedURLLocationStrategy(),
-//                new FileSystemLocationStrategy(),
-//                new ClasspathLocationStrategy());
-//        FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
-        FileLocationStrategy strategy = new ClasspathLocationStrategy();
+        List<FileLocationStrategy> subs = Arrays.asList(
+                new ProvidedURLLocationStrategy(),
+                new FileSystemLocationStrategy(),
+                new ClasspathLocationStrategy());
+        FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
+//        FileLocationStrategy strategy = new ClasspathLocationStrategy();
 
         Parameters params = new Parameters();
         builder = new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
@@ -87,6 +88,7 @@ public final class CapabilityManager {
         // Register an even listener to handle change in the configuration.
         builder.addEventListener(ConfigurationBuilderEvent.RESET, new EventListener<ConfigurationBuilderEvent>() {
             public void onEvent(ConfigurationBuilderEvent event) {
+                LogManager.getLogger(this.getClass()).logInfo("**************TestLogManager**************");
                 LOGGER.log(Level.INFO, "Event:" + event);
                 LOGGER.log(Level.INFO, "Reloading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
                 // Clear cache when configuration file changed.
@@ -106,11 +108,11 @@ public final class CapabilityManager {
                 config = builder.getConfiguration();
             } catch (ConfigurationException conEx) {
                 LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
-            } catch (NullPointerException nEx){
+            } catch (NullPointerException nEx) {
                 LOGGER.log(Level.SEVERE, nEx.getMessage(), nEx);
                 reset();
             } finally {
-                if (config == null){
+                if (config == null) {
                     LOGGER.log(Level.SEVERE, "... correct the configuration file and make sure it is validated" +
                             " against the schema. System will retry in " + RETRY_INTERVAL + " seconds.");
                     try {
