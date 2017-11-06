@@ -124,10 +124,72 @@ public class CapabilityManagerTest extends CapabilityTest {
         // Following line copies an ill-Formed config file into config file. This will cause a ConfigurationException
         // and put the framework in a loop util the configuration is fixed.
         copyFile(badConfig, capabilityFile);
-        // Sleep for 30 seconds to let the system load ill-formed configuration file before processing it.
+        // Sleep to let the system load badConfig configuration file before processing it.
         sleep(TimeUnit.SECONDS, 17);
-        // Following line copies a valid file into config file in a separate thread which will break the above loop.
+        // Following line copies a valid file into config file in a separate thread which will let system proceed.
         copyFile(validConfig, capabilityFile, TimeUnit.SECONDS, 32);
         assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+    }
+
+    /**
+     * Test handling of deleted config file at start
+     */
+    @Test
+    public void testDeletedConfigAtStart() throws IOException {
+        deleteCapabilityFile();
+        CapabilityManager.reset();
+        capabilityManager = CapabilityManager.getInstance();
+        assertEquals(false, isCapabilityFileExit());
+        // Sleep to let the system load sense the missng file.
+        sleep(TimeUnit.SECONDS, 17);
+        // Following line copies a valid file into config file in a separate thread which will let system proceed.
+        copyFile(validConfig, capabilityFile, TimeUnit.SECONDS, 32);
+        assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+    }
+
+    /**
+     * Test handling of deleted config file during execution
+     */
+    @Test
+    public void testDeletedConfigMidExecution() throws IOException {
+        assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+        deleteCapabilityFile();
+        assertEquals(false, isCapabilityFileExit());
+        // Sleep to let the system load sense the missng file.
+        sleep(TimeUnit.SECONDS, 17);
+        // Following line copies a valid file into config file in a separate thread which will let system proceed.
+        copyFile(validConfig, capabilityFile, TimeUnit.SECONDS, 32);
+        assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+    }
+    /**
+     * Test handling of misplaced config file at start
+     */
+    @Test
+    public void testMisplacedConfigAtStart() throws IOException {
+        moveCapabilityToTempDir();
+        CapabilityManager.reset();
+        capabilityManager = CapabilityManager.getInstance();
+        assertEquals(false, isCapabilityFileExit());
+        // Sleep to let the system load sense the missng file.
+        sleep(TimeUnit.SECONDS, 17);
+        // Following line copies a valid file into config file in a separate thread which will let system proceed.
+        copyFile(validConfig, capabilityFile, TimeUnit.SECONDS, 32);
+        assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+        deleteTempDir();
+    }
+    /**
+     * Test handling of misplaced config file during execution
+     */
+    @Test
+    public void testMisplacedConfigMidExecution() throws IOException {
+        assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+        moveCapabilityToTempDir();
+        assertEquals(false, isCapabilityFileExit());
+        // Sleep to let the system load sense the missng file.
+        sleep(TimeUnit.SECONDS, 17);
+        // Following line copies a valid file into config file in a separate thread which will let system proceed.
+        copyFile(validConfig, capabilityFile, TimeUnit.SECONDS, 32);
+        assertEquals(true, capabilityManager.getBoolean(CapabilityBooleanKey.ALLERGY_STATUS));
+        deleteTempDir();
     }
 }

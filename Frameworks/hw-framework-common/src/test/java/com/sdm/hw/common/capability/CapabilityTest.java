@@ -20,6 +20,7 @@ abstract public class CapabilityTest {
     protected static File validConfig = null;
     protected static File invalidConfig = null;
     protected static File capabilityFile = null;
+    protected static File tempDir = null;
     protected static CapabilityManager capabilityManager = CapabilityManager.getInstance();
     protected static ProvinceCodeProvider provinceCodeProvider = ProvinceCodeProvider.getInstance();
 
@@ -58,7 +59,6 @@ abstract public class CapabilityTest {
         capabilityManager.clearCache();
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
         copyFile(validConfig, capabilityFile);
-        // wait enough time so that above change in config is picked-up by the framework
     }
 
     @After
@@ -69,6 +69,30 @@ abstract public class CapabilityTest {
         FileUtils.touch(capabilityFile);
     }
 
+    void moveCapabilityToTempDir() throws IOException {
+        if (isCapabilityFileExit()){
+            String parentPath = validConfig.getParent();
+            // create capability file in the same directory as other test files
+            capabilityFile = new File(parentPath + File.separator + "capability.xml");
+            tempDir = new File(parentPath + File.separator + "tmp");
+            FileUtils.moveFileToDirectory(capabilityFile, tempDir, true);
+        }
+    }
+
+    void deleteTempDir() throws IOException {
+        FileUtils.forceDelete(tempDir);
+    }
+
+    void  deleteCapabilityFile()  throws IOException{
+        if (isCapabilityFileExit()){
+            FileUtils.forceDelete(capabilityFile);
+        }
+    }
+
+    boolean isCapabilityFileExit(){
+        return FileUtils.waitFor(capabilityFile, 20);
+    }
+
     /**
      * Following is a common method used for copying files
      *
@@ -77,9 +101,6 @@ abstract public class CapabilityTest {
      * @throws IOException
      */
     protected void copyFile(final File src, final File dest) throws IOException {
-//        LOGGER.log(Level.INFO, "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-//        LOGGER.log(Level.INFO, "Copying " + src.getAbsolutePath() + "...to..." + dest.getAbsolutePath() );
-//        LOGGER.log(Level.INFO, "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         FileUtils.copyFile(src, dest);
     }
 
