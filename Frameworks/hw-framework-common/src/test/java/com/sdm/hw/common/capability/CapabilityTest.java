@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,25 +20,36 @@ abstract public class CapabilityTest {
     protected static File illFormedConfig = null;
     protected static File validConfig = null;
     protected static File invalidConfig = null;
-    protected static File capabilityFile = null;
-    protected static File tempDir = null;
+    protected static File capabilityConfig = null;
+    protected static String tempDirPath = null;
     protected static CapabilityManager capabilityManager = CapabilityManager.getInstance();
     protected static ProvinceCodeProvider provinceCodeProvider = ProvinceCodeProvider.getInstance();
+    protected static final int DELAY = ThreadLocalRandom.current().nextInt(0, 30);
+    ;
+
+    protected static String VALID_CONFIG_NAME = "capability-valid.xml";
+    protected static String ILLFORMED_CONFIG_NAME = "capability-illformed.xml";
+    protected static String INVALID_CONFIG_NAME = "capability-invalid.xml";
+    protected static String CAPABILITY_CONFIG_NAME = "capability.xml";
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(System.lineSeparator());
         ClassLoader classLoader = CapabilityTest.class.getClassLoader();
-        validConfig = new File(classLoader.getResource("capability-valid.xml").getFile());
-        illFormedConfig = new File(classLoader.getResource("capability-illformed.xml").getFile());
-        invalidConfig = new File(classLoader.getResource("capability-invalid.xml").getFile());
+        validConfig = new File(classLoader.getResource(VALID_CONFIG_NAME).getFile());
+        illFormedConfig = new File(classLoader.getResource(ILLFORMED_CONFIG_NAME).getFile());
+        invalidConfig = new File(classLoader.getResource(INVALID_CONFIG_NAME).getFile());
 
         String parentPath = validConfig.getParent();
 
         // create capability file in the same directory as other test files
-        capabilityFile = new File(parentPath + File.separator + "capability.xml");
+        capabilityConfig = new File(parentPath + File.separator + "capability.xml");
+        tempDirPath = parentPath + File.separator + "tmp";
 
+
+        stringBuilder.append("Using Delay                     : "
+                + DELAY + System.lineSeparator());
         stringBuilder.append("InvalidCapabilityFile                     : "
                 + illFormedConfig.getAbsolutePath() + System.lineSeparator());
         stringBuilder.append("Valid Config File NS allergy Status True  : "
@@ -45,20 +57,24 @@ abstract public class CapabilityTest {
         stringBuilder.append("Duplicate Element Capability File         : "
                 + invalidConfig.getAbsolutePath() + System.lineSeparator());
         stringBuilder.append("CapabilityFile                            : "
-                + capabilityFile.getAbsolutePath() + System.lineSeparator());
+                + capabilityConfig.getAbsolutePath() + System.lineSeparator());
 
         LOGGER.info(stringBuilder.toString());
     }
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception{
 
+    @AfterClass
+    public static void tearDownAfterClass() {
+        // cleanup/delete files and directories which were created during
+        // execution of the this test suite.
+        FileUtils.deleteQuietly(new File(tempDirPath));
+        FileUtils.deleteQuietly(capabilityConfig);
     }
 
     @Before
-    public void setUp() throws Exception{
-        capabilityManager.clearCache();
+    public void setUp() throws Exception {
+        copyFile(validConfig, capabilityConfig);
         provinceCodeProvider.setCurrentProvinceCode(ProvinceCode.NOVA_SCOTIA);
-        copyFile(validConfig, capabilityFile);
+        capabilityManager.clearCache();
     }
 
     @After
@@ -66,31 +82,25 @@ abstract public class CapabilityTest {
     }
 
     void touchCapabilityFile() throws IOException {
-        FileUtils.touch(capabilityFile);
+        FileUtils.touch(capabilityConfig);
     }
 
     void moveCapabilityToTempDir() throws IOException {
-        if (isCapabilityFileExit()){
-            String parentPath = validConfig.getParent();
+        File tempConfig = new File(tempDirPath + File.pathSeparator + CAPABILITY_CONFIG_NAME);
+        if (capabilityConfig.exists() && !tempConfig.exists()) {
             // create capability file in the same directory as other test files
-            capabilityFile = new File(parentPath + File.separator + "capability.xml");
-            tempDir = new File(parentPath + File.separator + "tmp");
-            FileUtils.moveFileToDirectory(capabilityFile, tempDir, true);
+            FileUtils.moveFileToDirectory(capabilityConfig, new File(tempDirPath), true);
         }
     }
 
     void deleteTempDir() throws IOException {
-        FileUtils.forceDelete(tempDir);
+        FileUtils.forceDelete(new File(tempDirPath));
     }
 
-    void  deleteCapabilityFile()  throws IOException{
-        if (isCapabilityFileExit()){
-            FileUtils.forceDelete(capabilityFile);
+    void deleteCapabilityFile() throws IOException {
+        if (capabilityConfig.exists()) {
+            FileUtils.forceDelete(capabilityConfig);
         }
-    }
-
-    boolean isCapabilityFileExit(){
-        return FileUtils.waitFor(capabilityFile, 20);
     }
 
     /**
@@ -129,12 +139,11 @@ abstract public class CapabilityTest {
     }
 
     /**
-     *
      * @param timeUnit
      * @param delay
      */
 
-    protected void sleep(final TimeUnit timeUnit, final long delay){
+    protected void sleep(final TimeUnit timeUnit, final long delay) {
         try {
             timeUnit.sleep(delay);
         } catch (InterruptedException ex) {

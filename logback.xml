@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="300 seconds">
+	<property resource="logback_config.properties" />
+
+	<property name="PATTERN_LAYOUT"
+		value="%date{dd MMM yyyy;HH:mm:ss.SSS} [%marker %-5level] [%logger] [%thread] - %m %n" />
+
+	<property name="PATTERN_LAYOUT1"
+		value=" %m %n" />
+
+	<!-- Define Different output appenders -->
+
+	<appender name="EHEALTHModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${EHEALTH_MODULE_LOG_PATH}/${EHEALTH_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${EHEALTH_MODULE_LOG_PATH}/eHealth.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCEHEALTH" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="EHEALTHModuleAppender" />
+	</appender>
+
+
+	<!-- HWNG Module -->
+	<appender name="prescriptionModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${RX_MODULE_LOG_PATH}/${RX_MODULE_LOG_FILE_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${RX_MODULE_LOG_PATH}/rx.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCPRESCRIPTION" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="prescriptionModuleAppender" />
+	</appender>
+
+	<appender name="ispilModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${ISPIL_MODULE_LOG_PATH}/${ISPIL_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${ISPIL_MODULE_LOG_PATH}/ispil.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCISPIL" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="ispilModuleAppender" />
+	</appender>
+
+	<appender name="hwClientModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${HW_CLIENT_LOG_PATH}/${HW_CLIENT_LOG_FILE_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${HW_CLIENT_LOG_PATH}/hw-client.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCHWCLIENT" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="hwClientModuleAppender" />
+	</appender>
+
+	<appender name="prescriberModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${PRESCRIBER_MODULE_LOG_PATH}/${PRESCRIBER_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${PRESCRIBER_MODULE_LOG_PATH}/prescriber.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCPRESCRIBER" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="prescriberModuleAppender" />
+	</appender>
+
+	<appender name="patientModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${PATIENT_MODULE_LOG_PATH}/${PATIENT_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${PATIENT_MODULE_LOG_PATH}/patient.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCPATIENT" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="patientModuleAppender" />
+	</appender>
+
+	<appender name="drugModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DRUG_MODULE_LOG_PATH}/${DRUG_MODULE_LOG_FILE_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${DRUG_MODULE_LOG_PATH}/drug.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCDRUG" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="drugModuleAppender" />
+	</appender>
+
+	<appender name="pricingModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${PRICING_MODULE_LOG_PATH}/${PRICING_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${PRICING_MODULE_LOG_PATH}/pricing.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCPRICING" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="pricingModuleAppender" />
+	</appender>
+
+	<appender name="adjudicationModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${ADJUDICATION_MODULE_LOG_PATH}/${ADJUDICATION_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${ADJUDICATION_MODULE_LOG_PATH}/adjudication.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCADJUDICATON" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="adjudicationModuleAppender" />
+	</appender>
+
+	<appender name="durModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DUR_MODULE_LOG_PATH}/${DUR_MODULE_LOG_FILE_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${DUR_MODULE_LOG_PATH}/dur.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCDUR" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="durModuleAppender" />
+	</appender>
+
+	<appender name="storeModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${STORE_MODULE_LOG_PATH}/${STORE_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${STORE_MODULE_LOG_PATH}/store.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCSTORE" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="storeModuleAppender" />
+	</appender>
+
+	<appender name="ehrModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${EHR_MODULE_LOG_PATH}/${EHR_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${EHR_MODULE_LOG_PATH}/ehr.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCEHR" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="ehrModuleAppender" />
+	</appender>
+
+	<appender name="interfacesModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${INTERFACES_MODULE_LOG_PATH}/${INTERFACES_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${INTERFACES_MODULE_LOG_PATH}/interfaces.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCINTERFACES" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="interfacesModuleAppender" />
+	</appender>
+
+	<appender name="adapterModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${EXTERNAL_ADAPTER_LOG_PATH}/${EXTERNAL_ADAPTER_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${EXTERNAL_ADAPTER_LOG_PATH}/externalAdapter.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCADAPTER" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="adapterModuleAppender" />
+	</appender>
+
+	<appender name="modelModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${EXTERNAL_MODEL_LOG_PATH}/${EXTERNAL_MODEL_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${EXTERNAL_MODEL_LOG_PATH}/externalModel.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCMODEL" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="modelModuleAppender" />
+	</appender>
+
+	<appender name="erxAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${ERX_LOG_PATH}/${ERX_LOG_FILE_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${ERX_LOG_PATH}/eRx.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCERX" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="erxAppender" />
+	</appender>
+
+	<appender name="delegateModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DELEGATE_LOG_PATH}/${DELEGATE_LOG_FILE_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${DELEGATE_LOG_PATH}/delegate.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCDELEGATE" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="delegateModuleAppender" />
+	</appender>
+
+	<appender name="KPIAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${KPI_MODULE_LOG_PATH}/${KPI_MODULE_LOG_FILE_NAME}.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${KPI_MODULE_LOG_PATH}/kpi.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT1}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCKPI" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="KPIAppender" />
+	</appender>
+
+	<appender name="batchesModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${BATCHES_MODULE_LOG_PATH}/${BATCHES_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${BATCHES_MODULE_LOG_PATH}/batch.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCBATCHES" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="batchesModuleAppender" />
+	</appender>
+
+	<appender name="reportModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${REPORT_MODULE_LOG_PATH}/${REPORT_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${REPORT_MODULE_LOG_PATH}/report.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCREPORT" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="reportModuleAppender" />
+	</appender>
+
+	<appender name="deltaAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DELTA_MODULE_LOG_PATH}/${DELTA_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${DELTA_MODULE_LOG_PATH}/delta.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<maxHistory>5</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCDELTA" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="deltaAppender" />
+	</appender>
+	
+	
+	
+		<!-- MDP logging starts -->
+		
+	<appender name="mdpEhealthAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${MDP_EHEALTH_MODULE_LOG_PATH}/${MDP_EHEALTH_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${MDP_EHEALTH_MODULE_LOG_PATH}/mdp-ehealth.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCMDPEHEALTH" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="mdpEhealthAppender" />
+	</appender>
+	
+	<logger name="${MDP_EHEALTH_MODULE}" level="DEBUG">
+		<appender-ref ref="ASYNCMDPEHEALTH" />
+	</logger>
+	
+	<logger name="${MDP_QUERY_SERVICE}" level="DEBUG">
+		<appender-ref ref="ASYNCMDPEHEALTH" />
+	</logger>
+	
+	<!-- MDP logging ends -->
+	
+	<!-- Business Exception Service Logging Start -->
+	
+	<appender name="businessExceptionAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${BE_SERVICE_MODULE_LOG_PATH}/${BE_SERVICE_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${BE_SERVICE_MODULE_LOG_PATH}/business-Exception.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCBUSINESSEXCEPTION" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="businessExceptionAppender" />
+	</appender>
+	
+	<logger name="${BE_MODULE}" level="DEBUG">
+		<appender-ref ref="ASYNCBUSINESSEXCEPTION" />
+	</logger>
+	
+	<!-- Business Exception Service Logging End -->
+	
+	<!-- Logging for response received starts -->
+	<appender name="businessExceptionAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${RESPONSE_TRACKER_LOG_PATH}/${RESPONSE_TRACKER_LOG_FILE}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${RESPONSE_TRACKER_LOG_PATH}/response-log.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCRESPONSE" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="businessExceptionAppender" />
+	</appender>
+	
+	<logger name="${RESPONSE_TRACKER}" level="DEBUG">
+		<appender-ref ref="ASYNCRESPONSE" />
+	</logger>
+	
+	<logger name="${RESPONSE_TRACKER_DOMAIN}" level="DEBUG">
+		<appender-ref ref="ASYNCRESPONSE" />
+	</logger>
+	
+	<!-- Logging for response received ends -->
+	
+	<!-- Business Exception Reporting Service Logging start -->
+	<appender name="businessExceptionReportingAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${BER_SERVICE_MODULE_LOG_PATH}/${BER_SERVICE_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${BER_SERVICE_MODULE_LOG_PATH}/business-Exception-reproting.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCBUSINESSEXCEPTIONREPORT" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="businessExceptionReportingAppender" />
+	</appender>
+	
+	<logger name="${BER_MODULE}" level="DEBUG">
+		<appender-ref ref="ASYNCBUSINESSEXCEPTIONREPORT" />
+	</logger>
+	
+	
+	<!-- Business Exception Reporting Service Logging End -->
+	
+	<!-- Defect 9074 user audit Changes Start-->
+
+		<appender name="auditModuleAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${USER_AUDIT_MODULE_LOG_PATH}/${USER_AUDIT_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${USER_AUDIT_MODULE_LOG_PATH}/UserAudit.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCAUDIT" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="auditModuleAppender" />
+	</appender>
+	
+	
+	
+			<!-- CDR logging starts -->
+		
+	<appender name="mdpCdrAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${MDP_CDR_MODULE_LOG_PATH}/${MDP_CDR_MODULE_LOG_FILE_NAME}.log
+		</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${MDP_CDR_MODULE_LOG_PATH}/mdp-cdr.%d{yyyy-MM-dd}_%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+				<maxFileSize>25MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${PATTERN_LAYOUT}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNCMDPCDR" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>1024</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<appender-ref ref="mdpCdrAppender" />
+	</appender>
+	
+	<logger name="${MDP_CDR_MODULE}" level="DEBUG">
+		<appender-ref ref="ASYNCMDPCDR" />
+	</logger>
+	
+	<!-- CDR logging ends -->
+	
+	
+	
+	
+	
+	<logger name="${USER_AUDIT_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCAUDIT" />
+	</logger>
+	
+	<!-- Defect 9074 user audit Changes End-->
+
+	<logger name="${BATCHES_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCBATCHES" />
+	</logger>
+
+	<logger name="${KPI_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCKPI" />
+	</logger>
+
+	<logger name="${DELEGATE}" level="INFO">
+		<appender-ref ref="ASYNCDELEGATE" />
+	</logger>
+
+
+	<logger name="${EHEALTH_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCEHEALTH" />
+	</logger>
+
+
+	<logger name="${INTERFACES_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCINTERFACES" />
+	</logger>
+
+	<logger name="${EHR_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCEHR" />
+	</logger>
+
+	<logger name="${RX_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCPRESCRIPTION" />
+	</logger>
+
+	<logger name="${PPR_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCPRESCRIPTION" />
+	</logger>
+
+	<logger name="${WORKFLOW_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCPRESCRIPTION" />
+	</logger>
+
+	<logger name="${ISPIL_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCISPIL" />
+	</logger>
+
+	<logger name="${HW_CLIENT_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCHWCLIENT" />
+	</logger>
+
+	<logger name="${PRESCRIBER_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCPRESCRIBER" />
+	</logger>
+
+	<logger name="${PATIENT_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCPATIENT" />
+	</logger>
+
+	<logger name="${DRUG_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCDRUG" />
+	</logger>
+
+	<logger name="${DRUG_IMAGE_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCDRUG" />
+	</logger>
+
+	<logger name="${PRICING_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCPRICING" />
+	</logger>
+
+	<logger name="${ADJUDICATION_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCADJUDICATON" />
+	</logger>
+
+	<logger name="${DUR_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCDUR" />
+	</logger>
+
+	<logger name="${STORE_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCSTORE" />
+	</logger>
+
+	<logger name="${EXTERNAL_ADAPTER_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCADAPTER" />
+	</logger>
+
+	<logger name="${EXTERNAL_ADAPTER_JMS_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCADAPTER" />
+	</logger>
+
+	<logger name="${EXTERNAL_MODEL_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCMODEL" />
+	</logger>
+
+	<logger name="${ERX_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCERX" />
+	</logger>
+	
+	<logger name="${REPORT_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCREPORT" />
+	</logger>
+	
+	<logger name="${DELTA_MODULE}" level="INFO">
+		<appender-ref ref="ASYNCDELTA" />
+	</logger>
+
+
+	<!-- Define Root Level Log level ordering TRACE < DEBUG < INFO < WARN < 
+		ERROR -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
