@@ -1,6 +1,7 @@
 package com.sdm.hw.common.capability;
 
 import com.sdm.hw.logging.services.LogManager;
+import com.sdm.hw.logging.intf.HwLogger;
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.configuration2.builder.ConfigurationBuilderEvent;
 import org.apache.commons.configuration2.builder.ReloadingFileBasedConfigurationBuilder;
@@ -11,13 +12,13 @@ import org.apache.commons.configuration2.io.*;
 import org.apache.commons.configuration2.reloading.PeriodicReloadingTrigger;
 import org.apache.commons.configuration2.tree.xpath.XPathExpressionEngine;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
  *
  * @author Jasbir Minhas
  * @version 1.0
- * @since 2017-10-10
+ * @since 2017-11-07
  */
 public final class CapabilityManager {
     // Singleton Class initialization
@@ -39,24 +40,27 @@ public final class CapabilityManager {
     private static final String ENABLED_TAG = "enabled[@code='";
     private static final String CAPABILITY_NAME_TAG = "capability[@name='";
     private static final String VALUE_TAG = "value[@code='";
-    private static final Logger LOGGER = Logger.getLogger(CapabilityManager.class.getName());
     private static final boolean ENABLE_LOCAL_CACHE = true;
-    private static final int RETRY_INTERVAL = 15;
+    private static final int CONFIG_TRIGGER_PERIOD = 30;
+    private static final TimeUnit CONFIG_TRIGGER_UNIT = TimeUnit.SECONDS;
+    private static final int CONFIG_RETRY_INTERVAL = 30;
 
     private String curProvinceCode;
     private ReloadingFileBasedConfigurationBuilder<XMLConfiguration> builder = null;
     private CapabilityCache capabilityCache = new CapabilityCache();
 
+    private static final HwLogger LOGGER = LogManager.getLogger(CapabilityManager.class);
+
     /**
      * Private constructor for singleton
      */
     private CapabilityManager() {
-        initConfig();
     }
 
     public static synchronized CapabilityManager getInstance() {
         if (_instance == null) {
             _instance = new CapabilityManager();
+            _instance.initConfig();
         }
         return _instance;
     }
@@ -64,12 +68,7 @@ public final class CapabilityManager {
     private void initConfig() {
         loadCurProvinceCode();
 
-        List<FileLocationStrategy> subs = Arrays.asList(
-                new ProvidedURLLocationStrategy(),
-                new FileSystemLocationStrategy(),
-                new ClasspathLocationStrategy());
-        FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
-//        FileLocationStrategy strategy = new ClasspathLocationStrategy();
+        FileLocationStrategy strategy = new ClasspathLocationStrategy();
 
         Parameters params = new Parameters();
         builder = new ReloadingFileBasedConfigurationBuilder<>(XMLConfiguration.class)
@@ -82,15 +81,23 @@ public final class CapabilityManager {
                         .setExpressionEngine(new XPathExpressionEngine()));
 
         PeriodicReloadingTrigger trigger = new PeriodicReloadingTrigger(builder.getReloadingController(),
-                null, 1, TimeUnit.MINUTES);
+                null, CONFIG_TRIGGER_PERIOD, CONFIG_TRIGGER_UNIT);
         trigger.start();
+
+        LOGGER.logWarn(CAPABILITY_CONFIG_FILE + " from the following classpath will be loaded and checked every "
+                + CONFIG_TRIGGER_PERIOD + " " + CONFIG_TRIGGER_UNIT + " for any change.");
+
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+        URL[] urls = ((URLClassLoader)cl).getURLs();
+        for(URL url: urls){
+            LOGGER.logWarn(url.getFile());
+        }
 
         // Register an even listener to handle change in the configuration.
         builder.addEventListener(ConfigurationBuilderEvent.RESET, new EventListener<ConfigurationBuilderEvent>() {
             public void onEvent(ConfigurationBuilderEvent event) {
-                LogManager.getLogger(this.getClass()).logInfo("**************TestLogManager**************");
-                LOGGER.log(Level.INFO, "Event:" + event);
-                LOGGER.log(Level.INFO, "Reloading capability config:" + builder.getFileHandler().getFile().getAbsolutePath());
+                LOGGER.logWarn("Event:" + event);
+                LOGGER.logWarn("Reloading capability config :\n\t" + builder.getFileHandler().getFile().getAbsolutePath());
                 // Clear cache when configuration file changed.
                 clearCache();
                 getConfig().setExpressionEngine(new XPathExpressionEngine());
@@ -107,18 +114,19 @@ public final class CapabilityManager {
             try {
                 config = builder.getConfiguration();
             } catch (ConfigurationException conEx) {
-                LOGGER.log(Level.SEVERE, conEx.getMessage(), conEx);
-            } catch (NullPointerException nEx) {
-                LOGGER.log(Level.SEVERE, nEx.getMessage(), nEx);
+                LOGGER.logError(conEx.getMessage(), conEx);
+                clearCache();
+            } catch (Exception ex) {
+                LOGGER.logError(ex.getMessage(), ex);
                 reset();
             } finally {
                 if (config == null) {
-                    LOGGER.log(Level.SEVERE, "... correct the configuration file and make sure it is validated" +
-                            " against the schema. System will retry in " + RETRY_INTERVAL + " seconds.");
+                    LOGGER.logWarn("... correct the configuration file and make sure it is validated" +
+                            " against the schema. System will retry in " + CONFIG_RETRY_INTERVAL + " seconds.");
                     try {
-                        TimeUnit.SECONDS.sleep(RETRY_INTERVAL);
+                        TimeUnit.SECONDS.sleep(CONFIG_RETRY_INTERVAL);
                     } catch (InterruptedException ex) {
-                        LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                        LOGGER.logError(ex.getMessage(), ex);
                     }
                 }
             }
@@ -325,6 +333,5 @@ public final class CapabilityManager {
         private void cleanCache() {
             cacheMap.clear();
         }
-
     }
 }
