@@ -6,7 +6,7 @@ package com.sdm.hw.common.capability;
  *
  * @author Jasbir Minhas
  * @version 1.0
- * @since 2017-10-10
+ * @since 2017-11-07
  */
 
 public interface CapabilityKey {
